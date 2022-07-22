@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\GetOrcamentoController;
 use App\Http\Controllers\Api\OrdersController;
 use App\Http\Controllers\Api\UsersController;
+use App\Http\Controllers\Order\sendOrderQueueController;
+use App\Jobs\sendOrcamentoViaApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +29,10 @@ Route::prefix('v1')->group(function(){
     Route::get('orders',[OrdersController::class,'index']);
     // LISTAR TODOS OS USUARIOS
     Route::get('users',[UsersController::class,'index']);
+    Route::get('pedido',[GetOrcamentoController::class,'index']);
+
 
     // CADASTRAR NOVO PEDIDO
     Route::post('NewOrder',[OrdersController::class,'store']);
+    Route::post('pedido',[GetOrcamentoController::class,'store']);
 });

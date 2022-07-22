@@ -10,8 +10,6 @@ class GenerateNewOrderController extends Controller
 {
     public function NewOrder()
     {
-
-
         // BUSCA DADOS DO BANCO
         $orders = orders::getAllDataProcess();
         foreach ($orders as $order) {

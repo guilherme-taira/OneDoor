@@ -129,7 +129,7 @@ class OrdersController extends Controller
         //
     }
 
-    public function storeDataDB(){
+    public function Sea(){
 
     }
 
