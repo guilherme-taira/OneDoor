@@ -66,6 +66,14 @@ return [
 
         'odbc-connection-name' => [
             'driver' => 'odbc',
+            'dsn' => 'retcaixalaravel', // DB GERAL retnovolaravel -> DB INDIVUDUAL retcaixalaravel
+            'database' => 'ret.fdb',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+        ],
+
+        'odbc-ret' => [
+            'driver' => 'odbc',
             'dsn' => 'retnovolaravel',
             'database' => 'ret.fdb',
             'charset'   => 'utf8',

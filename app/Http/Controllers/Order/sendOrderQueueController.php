@@ -26,7 +26,6 @@ class sendOrderQueueController extends Controller
         return $this->get('?orcamento='.$this->getORCNUM());
     }
 
-
     public function get($resource){
 
         // ENDPOINT PARA REQUISICAO
@@ -40,6 +39,7 @@ class sendOrderQueueController extends Controller
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         echo "HTTP CODE : " . $httpcode;
+
         return response()->json($response);
     }
 

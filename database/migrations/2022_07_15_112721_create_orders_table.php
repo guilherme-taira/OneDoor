@@ -20,7 +20,7 @@ class CreateOrdersTable extends Migration
             $table->integer('quantity_items');
             $table->float('desconto')->nullable();
             $table->text('description')->nullable();
-            $table->char('HORASAIDA',5)->nullable();
+            $table->char('HORASAIDA',9)->nullable();
             $table->text('response')->nullable();
             $table->unsignedBigInteger('client_id');
             $table->char('Flag_Processado')->default('X');

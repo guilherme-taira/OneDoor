@@ -19,7 +19,7 @@ class GetOrcamentoController extends Controller
     public function index(Request $request)
     {
         $today = new DateTime();
-        $today->modify('-1 day');
+        //$today->modify('-1 day');
         $data = $today->format('Y-m-d');
 
         $pesquisas = DB::connection('odbc-connection-name')->table('PAF06')
@@ -39,10 +39,17 @@ class GetOrcamentoController extends Controller
      */
     public function store(Request $request)
     {
-        $pesquisas = DB::connection('odbc-connection-name')->table('RET081')
-        ->join('RET028', 'RET028.CLICod', '=', 'RET081.CLICod')
+        // $pesquisas = DB::connection('odbc-ret')->table('RET081')
+        // ->join('RET028', 'RET028.CLICod', '=', 'RET081.CLICod')
+        // ->join('RET501', 'RET028.CIDCod', '=', 'RET501.CIDCod')
+        // ->select("CLINome", "CLICPF", "CLIRG", "CLICNPJ", "CLIEmail", "CLIEnd", "CLICep", "CLIBairro", "CLINUMERO", "CIDNome", "CIDUF", "SAIQtde", "SAIVDA", "SAIDESCONTO", "CLIFone1", "CLIFone2", "CLIRef", "ORCNUM", "SAIData", "CLIBairro", "SAIHORA")
+        // ->where('ORCNUM','=',$request->orcamento)
+        // ->get();
+
+        $pesquisas = DB::connection('odbc-ret')->table('RET305')
+        ->join('RET028', 'RET028.CLICod', '=', 'RET305.CLICOD')
         ->join('RET501', 'RET028.CIDCod', '=', 'RET501.CIDCod')
-        ->select("CLINome", "CLICPF", "CLIRG", "CLICNPJ", "CLIEmail", "CLIEnd", "CLICep", "CLIBairro", "CLINUMERO", "CIDNome", "CIDUF", "SAIQtde", "SAIVDA", "SAIDESCONTO", "CLIFone1", "CLIFone2", "CLIRef", "ORCNUM", "SAIData", "CLIBairro", "SAIHORA")
+        ->select( "CLINome","CLICPF","CLIRG","CLICNPJ","CLIEmail","CLIEnd","CLICep","CLIBairro","CLINUMERO","CIDNome","CIDUF","CLIRef","ORCNUM","PRODTOTAL","PRODQTDE","ORCDESCONTO","ORCHR", "CLIFone1", "CLIFone2")
         ->where('ORCNUM','=',$request->orcamento)
         ->get();
 
@@ -54,8 +61,8 @@ class GetOrcamentoController extends Controller
 
             foreach ($pesquisas as $precos) {
                 if ($ORCAMENTO == $precos['ORCNUM']) {
-                    $total += $precos['SAIVDA'];
-                    $quantity_items += $precos['SAIQtde'];
+                    $total += $precos['PRODTOTAL'];
+                    $quantity_items += $precos['PRODQTDE'];
                 }
             }
 
@@ -89,8 +96,8 @@ class GetOrcamentoController extends Controller
                     $StoreData->value = $total;
                     $StoreData->quantity_items = $quantity_items;
                     $StoreData->ORCNUM = isset($ORCAMENTO) ? $ORCAMENTO : uniqid();
-                    $StoreData->desconto = $pesquisa['SAIDESCONTO'];
-                    $StoreData->HORASAIDA = $pesquisa['SAIHORA'];
+                    $StoreData->desconto = $pesquisa['ORCDESCONTO'];
+                    $StoreData->HORASAIDA = $pesquisa['ORCHR'];
                     $StoreData->client_id = $NewUser->getID();
                     $StoreData->save();
                 }

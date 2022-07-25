@@ -114,7 +114,7 @@ class OrderController extends Controller
             'telefone' => $request->telefone,
             'endereco' => $request->endereco,
             'bairro' => $request->bairro,
-            'uf' => $request->ufg,
+            'uf' => $request->uf,
         ]);
 
         return redirect()->route('ordersFail')->with('msg',"Pedido Atualizado com Sucesso!");
