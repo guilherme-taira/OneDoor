@@ -28,7 +28,7 @@ class CreateController extends Controller
     private $state;
     private $time;
 
-    public function __construct($orcamento,$total,$prepaid,$name,$document,$phoneNumber,$email,$street,$zipCode,$complement,$number,$district,$city,$state,$time)
+    public function __construct($orcamento, $total, $prepaid, $name, $document, $phoneNumber, $email, $street, $zipCode, $complement, $number, $district, $city, $state, $time)
     {
         $this->orcamento = $orcamento;
         $this->total = $total;
@@ -69,7 +69,7 @@ class CreateController extends Controller
         $Data = [
             "companyId" => "62d073c8a5478722377055be",
             "number" => $this->getOrcamento(),
-            "forecastDeliveryDate" => $this->getTime().'Z', // format "2022-07-21T17:59:01.000Z"
+            "forecastDeliveryDate" => $this->getTime() . 'Z', // format "2022-07-21T17:59:01.000Z"
             "deliveryCompanyName" => "Embaleme comércio de Emabalagem e Festas",
             "deliveryCompanyId" => "62d073c8a5478722377055be",
             "sendSms" => "false",
@@ -127,6 +127,12 @@ class CreateController extends Controller
                     "price" => $this->getTotal(),
                 ]
             ],
+            "weight" => 1,
+            "dimensions" => [
+                "length" => 1,
+                "height" => 1,
+                "width" => 1
+            ],
             "pickupAddress" => [
                 "street" => "Padre Juliao",
                 "zipCode" => "13610230",
@@ -168,10 +174,10 @@ class CreateController extends Controller
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         echo "HTTP CODE : " . $httpcode;
-        if($httpcode == '201'){
-            orders::where('ORCNUM',$this->getOrcamento())->update(['Flag_Processado' => '','response' => $response]);
-        }else{
-            orders::where('ORCNUM',$this->getOrcamento())->update(['flag_erro' => 'X','response' => json_decode($response, true)]);
+        if ($httpcode == '201') {
+            orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $response]);
+        } else {
+            orders::where('ORCNUM', $this->getOrcamento())->update(['flag_erro' => 'X', 'response' => json_decode($response, true)]);
         }
         // echo "<pre>";
         // print_r(json_decode($response, false));

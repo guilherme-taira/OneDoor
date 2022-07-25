@@ -60,16 +60,15 @@ class ViewController extends Controller
                     $newOrder->save();
                     // ENVIA PARA A FILA O ORÇAMENTO
                     \App\Jobs\sendOrcamentoViaApi::dispatch($value['ORCAMENTO'])->delay(now()->addSecond(2));
-                    // ENVIA PARA PLATAFORMA
-                    $orders = orders::getAllDataProcess();
-                    foreach ($orders as $order) {
-                        \App\Jobs\sendOrderforPlataform::dispatch($order->ORCNUM, $order->value, $order->value, $order->name, $order->documento, $order->telefone, $order->email, $order->endereco, $order->cep, $order->complemento, $order->numero, $order->bairro, $order->cidade, $order->UF, $order->updated_at)->delay(now()->addSecond(2));
-                    }
+
                 } catch (\Exception $e) {
                     //echo "Erro ao gerar o pedido Orçamento: " . $value['ORCAMENTO'];
                 }
             }
         }
+
+        $sendData = new GenerateNewOrderController();
+        $sendData->NewOrder();
 
         return view('view.gravapedidos', [
             'pedidos' => $pesquisas

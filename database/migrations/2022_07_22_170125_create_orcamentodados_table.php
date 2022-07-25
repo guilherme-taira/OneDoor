@@ -21,6 +21,8 @@ class CreateOrcamentodadosTable extends Migration
             $table->char('flag_enviado',1)->default('X');
             $table->string('terminal');
             $table->integer('vendedor');
+            $table->char('flag_aguardando',1)->default('X');
+            $table->char('flag_finalizado',1)->nullable();
             $table->timestamps();
         });
     }
