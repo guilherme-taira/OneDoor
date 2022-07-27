@@ -7,6 +7,7 @@
         <meta name="author" content="" />
         <title>Integração Onedoor Embaleme</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <script src="{{asset('js/app.js')}}"></script>
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -36,6 +37,17 @@
         <!-- Header-->
         <header class="masthead text-center text-white">
             <section id="scroll">
+                <div class="container">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header bg-primary">
+                          PDV LOGADOS
+                        </div>
+                        <ul class="list-group list-group-flush" id="publico">
+
+                        </ul>
+                      </div>
+                </div>
+
                 <div class="container px-5">
                     @yield('content')
                 </div>
@@ -51,37 +63,15 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-    </body>
-</html>
-{{--
-<body>
-    <div class="container">
-        <h1>Olá Mundo!</h1>
 
-        <div class="container">
-            <div class="card" style="width: 18rem;">
-                <div class="card-header">
-                  Mensagens Brodcasts
-                </div>
-                <ul class="list-group list-group-flush" id="publico">
-                  <li class="list-group-item">An item</li>
-                  <li class="list-group-item">A second item</li>
-                  <li class="list-group-item">A third item</li>
-                </ul>
-              </div>
-        </div>
-
-    </div>
-
-    <script>
-        var publico = document.getElementById("publico");
-        Echo.channel('channel-publico').listen('channelPublico',(e) => {
-            publico.innerHTML += "<div class='alert alert-success'>" + e.mensagem + '</div>';
-        });
-    </script>
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
+        <script>
+            var publico = document.getElementById("publico");
+            Echo.channel('channel-publico').listen('channelPublico',(e) => {
+                publico.innerHTML += "<div class='alert alert-success'>" + e.mensagem + '</div>';
+            });
+        </script>
+         <!-- Option 2: Separate Popper and Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-</body>
-
-</html> --}}
+    </body>
+</html>
