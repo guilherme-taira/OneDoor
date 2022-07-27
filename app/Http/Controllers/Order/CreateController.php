@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\orders;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CreateController extends Controller
 {
@@ -66,95 +67,185 @@ class CreateController extends Controller
         $date->modify('+4 hours');
         $this->setTime($date->format('Y-m-d\TH:i:s.u'));
 
-        $Data = [
-            "companyId" => "62d073c8a5478722377055be",
-            "number" => $this->getOrcamento(),
-            "forecastDeliveryDate" => $this->getTime() . 'Z', // format "2022-07-21T17:59:01.000Z"
-            "deliveryCompanyName" => "Embaleme comércio de Emabalagem e Festas",
-            "deliveryCompanyId" => "62d073c8a5478722377055be",
-            "sendSms" => "false",
-            "purchaseData" => [
-                "documentType" => "DECLARATION",
-                "companyiD" => "62d073c8a5478722377055be",
+        // GET COORDENADAS GEOCODE API
+        $dadosjson = json_decode(json_encode($this->getGeoCode($this->getCity(),$this->getStreet(),$this->getNumber(),$this->getDistrict())));
+
+        try {
+            $Data = [
+                "companyId" => "62d073c8a5478722377055be",
                 "number" => $this->getOrcamento(),
-                "total" => $this->getTotal(),
-            ],
-            "payments" => [
-                "prepaid" => $this->getPrepaid(),
-                "pending" => 0,
-                "methods" => [
-                    [
-                        "value" => $this->getTotal(),
-                        "currency" => "R$",
-                        "type" => "PREPAID",
-                        "method" => "CREDIT",
-                        "methodInfo" => "DEBIT",
-                        "changeFor" => 0
-                    ],
-                    [
-                        "value" => 0,
-                        "currency" => "R$",
-                        "type" => "PENDING",
-                        "method" => "CREDIT",
-                        "methodInfo" => "string",
-                        "changeFor" => 0
-                    ],
-                ]
-            ],
-            "recipient" => [
-                "name" => $this->getName(), // DADOS DO CLIENTE
-                "document" => $this->getDocument(),
-                "phoneNumber" => $this->getPhoneNumber(),
-                "email" => $this->getEmail(),
-                "address" => [
-                    "street" => $this->getStreet(),
-                    "zipCode" => $this->getZipCode(),
-                    "complement" => $this->getComplement(),
-                    "number" => $this->getNumber(),
-                    "district" => $this->getDistrict(),
-                    "city" => $this->getCity(),
-                    "state" => $this->getState(),
-                    "location" => [
-                        "latitude" => -21.6134463,
-                        "longitude" => -48.4074324
+                "forecastDeliveryDate" => $this->getTime() . 'Z', // format "2022-07-21T17:59:01.000Z"
+                "deliveryCompanyName" => "Embaleme comércio de Emabalagem e Festas",
+                "deliveryCompanyId" => "62d073c8a5478722377055be",
+                "sendSms" => "false",
+                "purchaseData" => [
+                    "documentType" => "DECLARATION",
+                    "companyiD" => "62d073c8a5478722377055be",
+                    "number" => $this->getOrcamento(),
+                    "total" => $this->getTotal(),
+                ],
+                "payments" => [
+                    "prepaid" => $this->getPrepaid(),
+                    "pending" => 0,
+                    "methods" => [
+                        [
+                            "value" => $this->getTotal(),
+                            "currency" => "R$",
+                            "type" => "PREPAID",
+                            "method" => "CREDIT",
+                            "methodInfo" => "DEBIT",
+                            "changeFor" => 0
+                        ],
+                        [
+                            "value" => 0,
+                            "currency" => "R$",
+                            "type" => "PENDING",
+                            "method" => "CREDIT",
+                            "methodInfo" => "string",
+                            "changeFor" => 0
+                        ],
+                    ]
+                ],
+                "recipient" => [
+                    "name" => $this->getName(), // DADOS DO CLIENTE
+                    "document" => $this->getDocument(),
+                    "phoneNumber" => $this->getPhoneNumber(),
+                    "email" => $this->getEmail(),
+                    "address" => [
+                        "street" => $this->getStreet(),
+                        "zipCode" => $this->getZipCode(),
+                        "complement" => $this->getComplement(),
+                        "number" => $this->getNumber(),
+                        "district" => $this->getDistrict(),
+                        "city" => $this->getCity(),
+                        "state" => $this->getState(),
+                        "location" => [
+                            "latitude" => $dadosjson->latitude,
+                            "longitude" => $dadosjson->longitude
+                        ],
                     ],
                 ],
-            ],
-            "items" => [
-                [
-                    "description" => "Preenchido automaticamente, favor editar",
-                    "quantity" => 1,
-                    "price" => $this->getTotal(),
+                "items" => [
+                    [
+                        "description" => "Preenchido automaticamente, favor editar",
+                        "quantity" => 1,
+                        "price" => $this->getTotal(),
+                    ]
+                ],
+                "weight" => 1,
+                "dimensions" => [
+                    "length" => 1,
+                    "height" => 1,
+                    "width" => 1
+                ],
+                "pickupAddress" => [
+                    "street" => "Padre Juliao",
+                    "zipCode" => "13610230",
+                    "district" => "Centro",
+                    "number" => "1312",
+                    "city" => "Leme",
+                    "state" => "SP",
+                    "location" => [
+                        "latitude" => -21.6136568,
+                        "longitude" => -48.3562922
+                    ]
                 ]
-            ],
-            "weight" => 1,
-            "dimensions" => [
-                "length" => 1,
-                "height" => 1,
-                "width" => 1
-            ],
-            "pickupAddress" => [
-                "street" => "Padre Juliao",
-                "zipCode" => "13610230",
-                "district" => "Centro",
-                "number" => "1312",
-                "city" => "Leme",
-                "state" => "SP",
-                "location" => [
-                    "latitude" => -21.6136568,
-                    "longitude" => -48.3562922
+            ];
+
+        } catch (\ErrorException $th) {
+            $Data = [
+                "companyId" => "62d073c8a5478722377055be",
+                "number" => $this->getOrcamento(),
+                "forecastDeliveryDate" => $this->getTime() . 'Z', // format "2022-07-21T17:59:01.000Z"
+                "deliveryCompanyName" => "Embaleme comércio de Emabalagem e Festas",
+                "deliveryCompanyId" => "62d073c8a5478722377055be",
+                "sendSms" => "false",
+                "purchaseData" => [
+                    "documentType" => "DECLARATION",
+                    "companyiD" => "62d073c8a5478722377055be",
+                    "number" => $this->getOrcamento(),
+                    "total" => $this->getTotal(),
+                ],
+                "payments" => [
+                    "prepaid" => $this->getPrepaid(),
+                    "pending" => 0,
+                    "methods" => [
+                        [
+                            "value" => $this->getTotal(),
+                            "currency" => "R$",
+                            "type" => "PREPAID",
+                            "method" => "CREDIT",
+                            "methodInfo" => "DEBIT",
+                            "changeFor" => 0
+                        ],
+                        [
+                            "value" => 0,
+                            "currency" => "R$",
+                            "type" => "PENDING",
+                            "method" => "CREDIT",
+                            "methodInfo" => "string",
+                            "changeFor" => 0
+                        ],
+                    ]
+                ],
+                "recipient" => [
+                    "name" => $this->getName(), // DADOS DO CLIENTE
+                    "document" => $this->getDocument(),
+                    "phoneNumber" => $this->getPhoneNumber(),
+                    "email" => $this->getEmail(),
+                    "address" => [
+                        "street" => $this->getStreet(),
+                        "zipCode" => $this->getZipCode(),
+                        "complement" => $this->getComplement(),
+                        "number" => $this->getNumber(),
+                        "district" => $this->getDistrict(),
+                        "city" => $this->getCity(),
+                        "state" => $this->getState(),
+                        "location" => [
+                            "latitude" => -0,
+                            "longitude" => -0
+                        ],
+                    ],
+                ],
+                "items" => [
+                    [
+                        "description" => "Preenchido automaticamente, favor editar",
+                        "quantity" => 1,
+                        "price" => $this->getTotal(),
+                    ]
+                ],
+                "weight" => 1,
+                "dimensions" => [
+                    "length" => 1,
+                    "height" => 1,
+                    "width" => 1
+                ],
+                "pickupAddress" => [
+                    "street" => "Padre Juliao",
+                    "zipCode" => "13610230",
+                    "district" => "Centro",
+                    "number" => "1312",
+                    "city" => "Leme",
+                    "state" => "SP",
+                    "location" => [
+                        "latitude" => -21.6136568,
+                        "longitude" => -48.3562922
+                    ]
                 ]
-            ]
-        ];
+            ];
+        }
 
         $json = json_encode($Data);
         // echo "<pre>";
         // print_r(json_decode($json));
 
+        // conexao com o banco para pegar token
+        $auth = DB::connection('ecommerce')->table('token')->where('user_id', 'onedoor')->first();
+
         $headers = array(
             "Content-Type: application/json",
             "Accept: application/json",
-            "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InF4Q242N0JhLWdJRWxkMG1pd1V5YiJ9.eyJodHRwczovL25hbWVzcGFjZS5leHRyYWZpZWxkcy9jb21wYW5pZXMiOnsiYnJhbmNoZXMiOltdLCJwYXJlbnQiOnsiY29tcGFueUlkIjoiNjJkMDczYzhhNTQ3ODcyMjM3NzA1NWJlIiwiY29tcGFueU5hbWUiOiJFbWJhbGVtZSIsImlzUGFyZW50Ijp0cnVlfX0sImlzcyI6Imh0dHBzOi8vb25lZG9vci1kZXYudXMuYXV0aDAuY29tLyIsInN1YiI6InA1aEY5R1hvY3JYc3NJRGVaSGRlck9MMVRQODRwTUtFQGNsaWVudHMiLCJhdWQiOiJodHRwczovL29uZWRvci1xdWFya3VzLmRldiIsImlhdCI6MTY1ODc1MDkzNCwiZXhwIjoxNjU4ODM3MzM0LCJhenAiOiJwNWhGOUdYb2NyWHNzSURlWkhkZXJPTDFUUDg0cE1LRSIsInNjb3BlIjoicmVhZDpjb21wYW5pZXMgdXBkYXRlOmNvbXBhbmllcyBjcmVhdGU6dXNlcnMgdXBkYXRlOnVzZXJzIHJlYWQ6dXNlcnMgZGVsZXRlOnVzZXJzIG1hbmFnZU90aGVyczp1c2VycyBjcmVhdGU6YnJhbmNoQ29tcGFuaWVzIG1hbmFnZTpvcmRlcnM6ZXh0ZXJuYWwgY3JlYXRlOm9yZGVyczpleHRlcm5hbCIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyIsInBlcm1pc3Npb25zIjpbInJlYWQ6Y29tcGFuaWVzIiwidXBkYXRlOmNvbXBhbmllcyIsImNyZWF0ZTp1c2VycyIsInVwZGF0ZTp1c2VycyIsInJlYWQ6dXNlcnMiLCJkZWxldGU6dXNlcnMiLCJtYW5hZ2VPdGhlcnM6dXNlcnMiLCJjcmVhdGU6YnJhbmNoQ29tcGFuaWVzIiwibWFuYWdlOm9yZGVyczpleHRlcm5hbCIsImNyZWF0ZTpvcmRlcnM6ZXh0ZXJuYWwiXX0.gkIgcbCkn6VCjxShU0RHPy7uDqbCxOG93PeSQH7JkZL4LDHMj2iJNUS0uZqrSJYgNiEU9KdYENg35xbWbmfz7xlV8RN6joJlNiR5toNHEhUkH8LWWOejowg-jxgYHl6LIVwuILUiRIp7S7fOfWy3PVPUZtTJH36ro2fh0UiKUFrzSIKDcPDTu3jNNeQTmzFA1N1NlBQcU48pyHS0BRet-Cp5JB53ZaX0ghJrV_Nx-yUEatAlf8PSM64Jo1qaOj1v1EN5AT-nyKAYVi-vcYMt8RSaW2FpuQDTH3BJWeJuequvDALSdRpRnZyFN1nUhXxxh6zka1Q3Gm-xXO7SNdScxg",
+            "Authorization: Bearer {$auth->access_token}",
         );
 
         $dataJson = json_encode($Data, JSON_PRETTY_PRINT);
@@ -177,7 +268,7 @@ class CreateController extends Controller
         if ($httpcode == '201') {
             orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $response]);
         } else {
-            orders::where('ORCNUM', $this->getOrcamento())->update(['flag_erro' => 'X', 'response' => json_decode($response, true)]);
+            orders::where('ORCNUM', $this->getOrcamento())->update(['flag_erro' => 'X', 'Flag_Processado' => '','response' => json_decode($response, true)]);
         }
         // echo "<pre>";
         // print_r(json_decode($response, false));
@@ -314,4 +405,42 @@ class CreateController extends Controller
 
         return $this;
     }
+
+
+    public function Endereco(array $endereco){
+        $regex = "[ ]";
+        $replecement = "+";
+        return preg_replace($regex,$replecement,$endereco['end']);
+    }
+
+    public function getGeoCode($cidade,$rua,$numero,$bairro){
+
+        $endereco = [];
+        $endereco['end'] = $cidade .'+'.$rua.'+'.$numero.'+'.$bairro;
+
+        $endpoint2 = "https://maps.googleapis.com/maps/api/geocode/json?address=".$this->Endereco($endereco)."&key=AIzaSyAgtArGP-BFZEi-Rs5Wwi8CzSQtiZBjObU";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $endpoint2);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        $response = curl_exec($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        $jsonData = json_decode($response);
+
+        try {
+            $endereco['latitude'] = $jsonData->results[0]->geometry->location->lat;
+            $endereco['longitude'] = $jsonData->results[0]->geometry->location->lng;
+
+            return $endereco;
+        } catch (\ErrorException $e) {
+            echo $e->getMessage();
+        }
+
+
+    }
+
 }

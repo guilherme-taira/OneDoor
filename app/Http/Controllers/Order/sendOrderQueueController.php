@@ -39,7 +39,6 @@ class sendOrderQueueController extends Controller
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         echo "HTTP CODE : " . $httpcode;
-
         return response()->json($response);
     }
 

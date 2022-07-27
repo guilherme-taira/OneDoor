@@ -23,11 +23,11 @@ class GetOrcamentoController extends Controller
         $data = $today->format('Y-m-d');
 
         $pesquisas = DB::connection('odbc-connection-name')->table('PAF06')
-        ->whereBetween('DATA', [$data, $data])
-        ->where('ORCAMENTO','!=',null)
-        ->distinct()
-        ->select('ORCAMENTO','DATA','SAT_CHAVE')
-        ->get();
+            ->whereBetween('DATA', [$data, $data])
+            ->where('ORCAMENTO', '!=', null)
+            ->distinct()
+            ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE')
+            ->get();
         return response()->json($pesquisas);
     }
 
@@ -47,13 +47,13 @@ class GetOrcamentoController extends Controller
         // ->get();
 
         $pesquisas = DB::connection('odbc-ret')->table('RET305')
-        ->join('RET028', 'RET028.CLICod', '=', 'RET305.CLICOD')
-        ->join('RET501', 'RET028.CIDCod', '=', 'RET501.CIDCod')
-        ->select( "CLINome","CLICPF","CLIRG","CLICNPJ","CLIEmail","CLIEnd","CLICep","CLIBairro","CLINUMERO","CIDNome","CIDUF","CLIRef","ORCNUM","PRODTOTAL","PRODQTDE","ORCDESCONTO","ORCHR", "CLIFone1", "CLIFone2")
-        ->where('ORCNUM','=',$request->orcamento)
-        ->get();
+            ->join('RET028', 'RET028.CLICod', '=', 'RET305.CLICOD')
+            ->join('RET501', 'RET028.CIDCod', '=', 'RET501.CIDCod')
+            ->select("CLINome", "CLICPF", "CLIRG", "CLICNPJ", "CLIEmail", "CLIEnd", "CLICep", "CLIBairro", "CLINUMERO", "CIDNome", "CIDUF", "CLIRef", "ORCNUM", "PRODTOTAL", "PRODQTDE", "ORCDESCONTO", "ORCHR", "CLIFone1", "CLIFone2")
+            ->where('ORCNUM', '=', $request->orcamento)
+            ->get();
 
-          foreach ($pesquisas as $pesquisa) {
+        foreach ($pesquisas as $pesquisa) {
             $total = 0;
             $quantity_items = 0;
 
@@ -67,9 +67,7 @@ class GetOrcamentoController extends Controller
             }
 
             //VERIFICA SE JÀ FOI CADASTRADO O ORÇAMENTO
-            if (orders::VerifyNewOrder($ORCAMENTO) > 0) {
-                return response()->json('Pedido Já Cadastrado!',404);
-            } else {
+            if (!orders::VerifyNewOrder($ORCAMENTO) > 0) {
                 if (isset($ORCAMENTO)) {
                     // FUNCTION USER
                     try {
@@ -103,7 +101,7 @@ class GetOrcamentoController extends Controller
                 }
             }
         }
-            return response()->json('Cadastrado Com Sucesso!',200);
+        return response()->json('Cadastrado Com Sucesso!', 200);
     }
 
     /**
@@ -157,7 +155,8 @@ class GetOrcamentoController extends Controller
     }
 
 
-    public function countNumber($numero){
+    public function countNumber($numero)
+    {
         $regexFone = "/^55/";
         $regexEspecial = "";
 

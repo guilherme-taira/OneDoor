@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Order\CreateController;
 use App\Http\Controllers\Order\GenerateNewOrderController;
 use App\Models\orcamentodados;
@@ -18,8 +19,12 @@ class ViewController extends Controller
     {
         // $CreateController = new CreateController();
         // print_r($CreateController->resource());
-        $GenerateNewOrderController = new GenerateNewOrderController();
-        $GenerateNewOrderController->NewOrder();
+        // $GenerateNewOrderController = new GenerateNewOrderController();
+        // $GenerateNewOrderController->NewOrder();
+
+        $auth = new AuthController();
+        print_r($auth->resource());
+
         return view('view.index');
     }
 
@@ -50,6 +55,7 @@ class ViewController extends Controller
         foreach ($pesquisas as $value) {
             //VERIFICA SE JÀ FOI CADASTRADO O ORÇAMENTO
             if (!orcamentodados::VerifyNewOrder($value['ORCAMENTO']) > 0) {
+                //echo "CADASTRADO COM SUCESSO!";
                 try {
                     $newOrder = new orcamentodados();
                     $newOrder->ORCNUM = $value['ORCAMENTO'];
@@ -59,7 +65,7 @@ class ViewController extends Controller
                     $newOrder->terminal = $value['PDV'];
                     $newOrder->save();
                     // ENVIA PARA A FILA O ORÇAMENTO
-                    \App\Jobs\sendOrcamentoViaApi::dispatch($value['ORCAMENTO'])->delay(now()->addSecond(2));
+                    \App\Jobs\sendOrcamentoViaApi::dispatch($value['ORCAMENTO']);
 
                 } catch (\Exception $e) {
                     //echo "Erro ao gerar o pedido Orçamento: " . $value['ORCAMENTO'];
@@ -75,7 +81,9 @@ class ViewController extends Controller
         ]);
     }
 
-    public function storeDataDB($nome, $documento, $phoneNumber, $email, $Rua, $Cep, $Complemento, $Numero, $Cidade, $Estado, $preco)
+
+    public function consulta()
     {
+        return view('view.consulta');
     }
 }

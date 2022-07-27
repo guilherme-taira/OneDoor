@@ -78,8 +78,8 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        echo "<pre>";
-        print_r($request->except('_token','_method'));
+        // echo "<pre>";
+        // print_r($request->except('_token','_method'));
 
         $validator = Validator::make($request->all(),[
             'valor' => 'required|numeric|min:0',
@@ -104,7 +104,8 @@ class OrderController extends Controller
 
         orders::where('ORCNUM',$request->orcnum)->update([
             'value' => $request->valor,
-            'flag_erro' => '',
+            'flag_erro' => '1',
+            'Flag_Processado' => 'X',
         ]);
 
          User::where('id',$request->clientId)->update([

@@ -63,6 +63,26 @@ return [
             ]) : [],
         ],
 
+        'ecommerce' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => '192.168.1.64',
+            'port' => env('DB_PORT', '3306'),
+            'database' => "ecommerce",
+            'username' => "root",
+            'password' => "35712986",
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
 
         'odbc-connection-name' => [
             'driver' => 'odbc',

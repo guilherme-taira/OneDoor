@@ -53,7 +53,6 @@
                                 </div>
                             @endif
 
-                            {{ $order }}
                             <div class="row d-flex justify-content-center">
                                 <div class=" text-center">
                                     <div class="card py-4">

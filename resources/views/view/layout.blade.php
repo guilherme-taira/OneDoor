@@ -28,6 +28,7 @@
                         <li class="nav-item"><a class="nav-link" href="{{route('ordersFail')}}">Pedidos com Erros <i class="bi bi-asterisk"></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('orders.index')}}">Pedidos <i class="bi bi-box2-heart"></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('gravapedidos')}}">Integração <i class="bi bi-arrow-left-right"></i></i></a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{route('consulta')}}">Preço e Saldo <i class="bi bi-arrow-left-right"></i></i></a></li>
                     </ul>
                 </div>
             </div>
