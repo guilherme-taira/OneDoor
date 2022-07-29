@@ -84,13 +84,22 @@ return [
         ],
 
 
-        'odbc-connection-name' => [
+        'caixa10' => [
             'driver' => 'odbc',
-            'dsn' => 'retcaixalaravel', // DB GERAL retnovolaravel -> DB INDIVUDUAL retcaixalaravel
+            'dsn' => 'retcaixalaravel10', // DB GERAL retnovolaravel -> DB INDIVUDUAL retcaixalaravel
             'database' => 'ret.fdb',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
         ],
+
+        'caixa11' => [
+            'driver' => 'odbc',
+            'dsn' => 'retcaixalaravel11', // DB GERAL retnovolaravel -> DB INDIVUDUAL retcaixalaravel
+            'database' => 'ret.fdb',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+        ],
+
 
         'odbc-ret' => [
             'driver' => 'odbc',

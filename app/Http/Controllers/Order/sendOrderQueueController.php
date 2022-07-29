@@ -13,7 +13,7 @@ interface RequestOneDoorApiIntern{
 class sendOrderQueueController extends Controller
 {
 
-    const URL_BASE_API = 'http://127.0.0.1:8000/api/v1/pedido';
+    const URL_BASE_API = 'http://http://127.0.0.1:8000/api/v1/pedido';
 
     private $ORCNUM;
 

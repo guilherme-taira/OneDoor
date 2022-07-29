@@ -37,7 +37,7 @@
         <!-- Header-->
         <header class="masthead text-center text-white">
             <section id="scroll">
-                <div class="container">
+                {{-- <div class="container">
                     <div class="card" style="width: 18rem;">
                         <div class="card-header bg-primary">
                           PDV LOGADOS
@@ -46,7 +46,7 @@
 
                         </ul>
                       </div>
-                </div>
+                </div> --}}
 
                 <div class="container px-5">
                     @yield('content')

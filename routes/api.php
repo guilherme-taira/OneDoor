@@ -36,3 +36,4 @@ Route::prefix('v1')->group(function(){
     Route::post('NewOrder',[OrdersController::class,'store']);
     Route::post('pedido',[GetOrcamentoController::class,'store']);
 });
+

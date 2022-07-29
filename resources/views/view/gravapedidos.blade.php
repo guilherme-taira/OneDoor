@@ -17,14 +17,20 @@
                                         <th>Orçamento</th>
                                         <th>Data</th>
                                         <th>SAT Chave</th>
+                                        <th>Terminal</th>
+                                        <th>Vendendor</th>
+                                        <th>Cadastrado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($pedidos as $order)
                                         <tr>
-                                            <th scope="row">{{ $order['ORCAMENTO'] }}</th>
-                                            <td>{{ $order['DATA'] }}</td>
-                                            <td>{{ $order['SAT_CHAVE'] }}</td>
+                                            <th scope="row">{{ $order->ORCNUM }}</th>
+                                            <td>{{ $order->data }}</td>
+                                            <td>{{ $order->sat_chave }}</td>
+                                            <td>{{ $order->terminal }}</td>
+                                            <td>{{ $order->vendedor }}</td>
+                                            <td>{{ $order->created_at }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
