@@ -24,17 +24,16 @@ class AuthController implements RequestOnedoor
 
     public function get($resource)
     {
-
         // ENDPOINT PARA REQUISICAO
         $endpoint = self::URL_BASE_ONDEDOOR . $resource;
 
         $ch = curl_init();
 
         $Data = [
-            "client_id" => "p5hF9GXocrXssIDeZHderOL1TP84pMKE",
-            "client_secret" => "4XFLVU8-Sz2UbLenO8edA0T7RmFZJQ7u41Y--fGg_XwocLYwQ8gYJHFxa_ShgXad",
-            "audience" => "https://onedor-quarkus.dev",
-            "grant_type" => "client_credentials"
+            "client_id" => "p5hF9GXocrXssIDeZHderOL1TP84pMKE", // PROD env('ONEDOOR_CLIENT_ID')
+            "client_secret" => "4XFLVU8-Sz2UbLenO8edA0T7RmFZJQ7u41Y--fGg_XwocLYwQ8gYJHFxa_ShgXad", // PROD env('ONEDOOR_CLIENT_SECRET')
+            "audience" => "https://onedor-quarkus.dev", // PROD env('ONEDOOR_AUDIENCE')
+            "grant_type" => "client_credentials" // PROD env('ONEDOOR_GRANT_TYPE')
         ];
 
         $headers = array(

@@ -129,8 +129,4 @@ class OrdersController extends Controller
         //
     }
 
-    public function Sea(){
-
-    }
-
 }

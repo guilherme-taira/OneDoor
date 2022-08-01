@@ -29,7 +29,7 @@
                         <li class="nav-item"><a class="nav-link" href="{{route('ordersFail')}}">Pedidos com Erros <i class="bi bi-asterisk"></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('orders.index')}}">Pedidos <i class="bi bi-box2-heart"></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('gravapedidos')}}">Integração <i class="bi bi-arrow-left-right"></i></i></a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{route('consulta')}}">Preço e Saldo <i class="bi bi-arrow-left-right"></i></i></a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{route('orders.create')}}">Cadastro Manual<i class="bi bi-arrow-left-right"></i></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -75,3 +75,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     </body>
 </html>
+
+
+

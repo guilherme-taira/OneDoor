@@ -23,7 +23,10 @@ Route::get('/gravapedidos', [ViewController::class,'gravapedidos'])->name('grava
 Route::get('/consulta', [ViewController::class,'consulta'])->name('consulta');
 Route::get('/ordersFail', [ViewController::class,'ordersFail'])->name('ordersFail');
 Route::get('/sendPostOrders', [ViewController::class,'index'])->name('SendDataforOneDoor');
+Route::get('/getInformationOrder',[consultaretController::class,'getInformationOrder'])->name('getInformationOrder');
 
+// ROTAS POST
+Route::get('/storeNewOrcamento',[consultaretController::class,'storeNewOrcamento'])->name('storeNewOrcamento');
 // ROTAS AJAX
 Route::get('/consultaret',[consultaretController::class,'consultaret'])->name('consultaret');
 // ROTAS RESOURCE
