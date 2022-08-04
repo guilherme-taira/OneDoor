@@ -51,3 +51,4 @@ class consultaretController extends Controller
         }
     }
 }
+

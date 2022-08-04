@@ -15,7 +15,7 @@ interface RequestOnedoor
 
 class AuthController implements RequestOnedoor
 {
-    const URL_BASE_ONDEDOOR = "https://onedoor-dev.us.auth0.com";
+    const URL_BASE_ONDEDOOR = "https://auth.onedoor.com.br"; // https://onedoor-prod.us.auth0.com PROD // https://onedoor-dev.us.auth0.com DEV
 
     public function resource()
     {
@@ -30,16 +30,15 @@ class AuthController implements RequestOnedoor
         $ch = curl_init();
 
         $Data = [
-            "client_id" => "p5hF9GXocrXssIDeZHderOL1TP84pMKE", // PROD env('ONEDOOR_CLIENT_ID')
-            "client_secret" => "4XFLVU8-Sz2UbLenO8edA0T7RmFZJQ7u41Y--fGg_XwocLYwQ8gYJHFxa_ShgXad", // PROD env('ONEDOOR_CLIENT_SECRET')
-            "audience" => "https://onedor-quarkus.dev", // PROD env('ONEDOOR_AUDIENCE')
-            "grant_type" => "client_credentials" // PROD env('ONEDOOR_GRANT_TYPE')
+            "client_id"=>env('ONEDOOR_CLIENT_ID'), // PROD env('ONEDOOR_CLIENT_ID')
+            "client_secret"=>env('ONEDOOR_CLIENT_SECRET'), // PROD env('ONEDOOR_CLIENT_SECRET')
+            "audience"=>env('ONEDOOR_AUDIENCE'), // PROD env('ONEDOOR_AUDIENCE')
+            "grant_type"=>env('ONEDOOR_GRANT_TYPE') // PROD env('ONEDOOR_GRANT_TYPE')
         ];
 
         $headers = array(
             "Content-Type: application/json",
             "Accept: application/json",
-            "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InF4Q242N0JhLWdJRWxkMG1pd1V5YiJ9.eyJodHRwczovL25hbWVzcGFjZS5leHRyYWZpZWxkcy9jb21wYW5pZXMiOnsiYnJhbmNoZXMiOltdLCJwYXJlbnQiOnsiY29tcGFueUlkIjoiNjJkMDczYzhhNTQ3ODcyMjM3NzA1NWJlIiwiY29tcGFueU5hbWUiOiJFbWJhbGVtZSIsImlzUGFyZW50Ijp0cnVlfX0sImlzcyI6Imh0dHBzOi8vb25lZG9vci1kZXYudXMuYXV0aDAuY29tLyIsInN1YiI6InA1aEY5R1hvY3JYc3NJRGVaSGRlck9MMVRQODRwTUtFQGNsaWVudHMiLCJhdWQiOiJodHRwczovL29uZWRvci1xdWFya3VzLmRldiIsImlhdCI6MTY1ODI1Mzc3NywiZXhwIjoxNjU4MzQwMTc3LCJhenAiOiJwNWhGOUdYb2NyWHNzSURlWkhkZXJPTDFUUDg0cE1LRSIsInNjb3BlIjoicmVhZDpjb21wYW5pZXMgdXBkYXRlOmNvbXBhbmllcyBjcmVhdGU6dXNlcnMgdXBkYXRlOnVzZXJzIHJlYWQ6dXNlcnMgZGVsZXRlOnVzZXJzIG1hbmFnZU90aGVyczp1c2VycyBjcmVhdGU6YnJhbmNoQ29tcGFuaWVzIG1hbmFnZTpvcmRlcnM6ZXh0ZXJuYWwgY3JlYXRlOm9yZGVyczpleHRlcm5hbCIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyIsInBlcm1pc3Npb25zIjpbInJlYWQ6Y29tcGFuaWVzIiwidXBkYXRlOmNvbXBhbmllcyIsImNyZWF0ZTp1c2VycyIsInVwZGF0ZTp1c2VycyIsInJlYWQ6dXNlcnMiLCJkZWxldGU6dXNlcnMiLCJtYW5hZ2VPdGhlcnM6dXNlcnMiLCJjcmVhdGU6YnJhbmNoQ29tcGFuaWVzIiwibWFuYWdlOm9yZGVyczpleHRlcm5hbCIsImNyZWF0ZTpvcmRlcnM6ZXh0ZXJuYWwiXX0.UHdAHYzX4gSk-p1xmGpDavRcvZS4oLvHfrk7J7LEStE1S_YYwguaXNEZDuKxyP5waECT4eb60BR-peF5Oa2tqk7HDIiqvChOCPFyVefX1tea21qSDCKBvv_oEy0XHIbt1mIDSf5SywOWpHUFykaPvFSTGedhFfOyQMAJzlfjTBXipDTaad1OZjOsIcRTcXqmEJI4Y2WiN57DIR730VbEnQQ4fSqXf3DC9BV4nggMMT_iy5Q8q3aoz4vXyFftYUwM5eCDKVI2thCiZKs33kGmtoha9ZzltfX0D16FlXXAmV7-AD8xIkdM4T-BFkQJD9y4U-idaKYI8i0mugj4RBuhSA",
         );
 
         $dataJson = json_encode($Data);

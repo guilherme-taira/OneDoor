@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class CreateController extends Controller
 {
-    const URL_BASE_ONEDOOR_CREATE = "https://api-dev.onedoor.com.br";
+    const URL_BASE_ONEDOOR_CREATE = "https://api.onedoor.com.br"; //
 
     private $orcamento;
     private $total;
@@ -72,15 +72,15 @@ class CreateController extends Controller
 
         try {
             $Data = [
-                "companyId" => "62d073c8a5478722377055be",
+                "companyId" => "62cd78c39f35ff21644973c0",
                 "number" => $this->getOrcamento(),
-                "forecastDeliveryDate" => $this->getTime() . 'Z', // format "2022-07-21T17:59:01.000Z"
+                "forecastDeliveryDate" => $this->getTime().'Z', // format "2022-07-21T17:59:01.000Z"
                 "deliveryCompanyName" => "Embaleme comércio de Emabalagem e Festas",
-                "deliveryCompanyId" => "62d073c8a5478722377055be",
+                "deliveryCompanyId" => "62cd78c39f35ff21644973c0",
                 "sendSms" => "false",
                 "purchaseData" => [
                     "documentType" => "DECLARATION",
-                    "companyiD" => "62d073c8a5478722377055be",
+                    "companyiD" => "62cd78c39f35ff21644973c0",
                     "number" => $this->getOrcamento(),
                     "total" => $this->getTotal(),
                 ],
@@ -154,15 +154,15 @@ class CreateController extends Controller
 
         } catch (\ErrorException $th) {
             $Data = [
-                "companyId" => "62d073c8a5478722377055be",
+                "companyId" => "62cd78c39f35ff21644973c0",
                 "number" => $this->getOrcamento(),
                 "forecastDeliveryDate" => $this->getTime() . 'Z', // format "2022-07-21T17:59:01.000Z"
                 "deliveryCompanyName" => "Embaleme comércio de Emabalagem e Festas",
-                "deliveryCompanyId" => "62d073c8a5478722377055be",
+                "deliveryCompanyId" => "62cd78c39f35ff21644973c0",
                 "sendSms" => "false",
                 "purchaseData" => [
                     "documentType" => "DECLARATION",
-                    "companyiD" => "62d073c8a5478722377055be",
+                    "companyiD" => "62cd78c39f35ff21644973c0",
                     "number" => $this->getOrcamento(),
                     "total" => $this->getTotal(),
                 ],
@@ -249,8 +249,6 @@ class CreateController extends Controller
         );
 
         $dataJson = json_encode($Data, JSON_PRETTY_PRINT);
-        // echo "<pre>";
-        // print_r($dataJson);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -264,6 +262,7 @@ class CreateController extends Controller
         $response = curl_exec($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+        //print_r($response);
         echo "HTTP CODE : " . $httpcode;
         if ($httpcode == '201') {
             orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $response]);

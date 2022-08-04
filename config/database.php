@@ -100,6 +100,15 @@ return [
             'collation' => 'utf8_unicode_ci',
         ],
 
+        'caixa13' => [
+            'driver' => 'odbc',
+            'dsn' => 'retcaixalaravel13', // DB GERAL retnovolaravel -> DB INDIVUDUAL retcaixalaravel
+            'database' => 'ret.fdb',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+        ],
+
+
 
         'odbc-ret' => [
             'driver' => 'odbc',
