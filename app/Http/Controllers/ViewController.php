@@ -102,13 +102,13 @@ class ViewController extends Controller
             }
         }
 
-          // CAIXA 13
-          $pesquisas = DB::connection('caixa13')->table('PAF06')
-          ->whereBetween('DATA', [$data, $data])
-          ->where('ORCAMENTO', '!=', null)
-          ->distinct()
-          ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
-          ->get();
+    // CAIXA 13
+    $pesquisas = DB::connection('caixa13')->table('PAF06')
+    ->whereBetween('DATA', [$data, $data])
+    ->where('ORCAMENTO', '!=', null)
+    ->distinct()
+    ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
+    ->get();
 
       foreach ($pesquisas as $value) {
           //VERIFICA SE JÀ FOI CADASTRADO O ORÇAMENTO
@@ -208,19 +208,17 @@ class ViewController extends Controller
     }
 
 
+
     public function TelefoneFilter(array $telefone)
     {
         $regex = "/ /";
         $replacement = "";
 
-        if ($telefone['CLIFone1'] == 'null' || $telefone['CLIFone2'] == 'null' || $telefone['CLIFone1'] == '' || $telefone['CLIFone2'] == '') {
+        if (strlen(preg_replace($regex, $replacement, $telefone['CLIFone1'])) < 11) {
             return '5599999999999';
-        } else if (strlen(preg_replace($regex, $replacement, $telefone['CLIFone1'])) > strlen(preg_replace($regex, $replacement, $telefone['CLIFone1']))) {
+        }else {
             $telefone = preg_replace($regex, $replacement, $telefone['CLIFone1']);
-            return '55' . $telefone;
-        } else {
-            $telefone = preg_replace($regex, $replacement, $telefone['CLIFone2']);
-            return '55' . $telefone;
+            return '55'.$telefone;
         }
     }
 

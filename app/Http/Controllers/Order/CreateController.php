@@ -77,7 +77,7 @@ class CreateController extends Controller
                 "forecastDeliveryDate" => $this->getTime().'Z', // format "2022-07-21T17:59:01.000Z"
                 "deliveryCompanyName" => "Embaleme comércio de Emabalagem e Festas",
                 "deliveryCompanyId" => "62cd78c39f35ff21644973c0",
-                "sendSms" => "false",
+                "sendSms" => "true",
                 "purchaseData" => [
                     "documentType" => "DECLARATION",
                     "companyiD" => "62cd78c39f35ff21644973c0",
@@ -159,7 +159,7 @@ class CreateController extends Controller
                 "forecastDeliveryDate" => $this->getTime() . 'Z', // format "2022-07-21T17:59:01.000Z"
                 "deliveryCompanyName" => "Embaleme comércio de Emabalagem e Festas",
                 "deliveryCompanyId" => "62cd78c39f35ff21644973c0",
-                "sendSms" => "false",
+                "sendSms" => "true",
                 "purchaseData" => [
                     "documentType" => "DECLARATION",
                     "companyiD" => "62cd78c39f35ff21644973c0",
@@ -236,9 +236,9 @@ class CreateController extends Controller
         }
 
         $json = json_encode($Data);
-        // echo "<pre>";
-        // print_r(json_decode($json));
 
+        // print_r(json_decode($json));
+        // echo "<hr>";
         // conexao com o banco para pegar token
         $auth = DB::connection('ecommerce')->table('token')->where('user_id', 'onedoor')->first();
 

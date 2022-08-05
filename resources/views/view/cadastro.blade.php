@@ -135,30 +135,25 @@
                     data: {
                         code: code,
                     },
-                    beforeSend: function() {
-                        $("#loaderDiv").show();
-                    },
                     success: function(response) {
-                        $("#loaderDiv").slideUp('slow');
                         // mostra o retorno dos dados
                         $('.returnResponse').show();
                         $('#content-complete').addClass('d-none');
 
                         try {
                             var json = $.parseJSON(response.dados);
-
                             $("#cliente").append(json[0].CLINome);
                             $("#data").append(json[0].SAIData);
                             $("#sat_chave").append(json[0].SATCHAVE);
                             $("#terminal").append(json[0].SAITERMINAL);
                             $("#vendedor").append(json[0].VENDCOD);
-                            $("#orcamento").append(json[0].ORCNUM);
+                            $("#orcamento").append(json[0].SAICupom);
 
                             $.ajax({
                                 url: "/storeNewOrcamento",
                                 type: "GET",
                                 data: {
-                                    ORCAMENTO: json[0].ORCNUM,
+                                    ORCAMENTO: json[0].SAICupom,
                                     DATA: json[0].SAIData,
                                     SAT_CHAVE: json[0].SATCHAVE,
                                     VENDEDOR: json[0].VENDCOD,
@@ -169,8 +164,9 @@
                                 },
                                 success: function(response) {
                                     // mostra os dados de retorno
+                                    $("#loaderDiv").slideUp('slow');
                                     $('#msg').show();
-
+                                    console.log(response);
                                     if(res.status == '200'){
                                         $('#msg').addClass('alert alert-warning').append(response.response);
                                     }else if(res.status == '201'){
