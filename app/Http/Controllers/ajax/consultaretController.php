@@ -24,12 +24,20 @@ class consultaretController extends ViewController
 
     public function getInformationOrder(Request $request){
 
-        $retResponse = json_encode(DB::connection('odbc-ret')->table('RET081')
-        ->join('RET028', 'RET028.CLICod', '=', 'RET081.CLICod')
-        ->where("SATCHAVE",$request->code)
-        ->get());
+        try {
+            $retResponse = DB::connection('odbc-ret')->table('RET081')
+            // ->join('RET028', 'RET028.CLICod', '=', 'RET081.CLICod')
+            ->where("SATCHAVE",'=',$request->code)
+            ->get();
 
-        return response()->json(['dados' => $retResponse],200);
+            return response()->json(['dados' => json_encode($retResponse)]);
+        } catch (\Exception $e) {
+            return response()->json(['dados' => $e->getMessage()]);
+        }
+
+
+
+        // return response()->json(['dados' => $retResponse],200);
     }
 
     public function storeNewOrcamento(Request $request){

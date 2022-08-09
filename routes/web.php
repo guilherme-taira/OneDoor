@@ -2,7 +2,10 @@
 
 use App\Events\channelPublico;
 use App\Http\Controllers\ajax\consultaretController;
+use App\Http\Controllers\Ajax\SendOrderByColaborador;
+use App\Http\Controllers\Order\OrderConflictController;
 use App\Http\Controllers\Order\OrderController;
+use App\Http\Controllers\Vendedor\VendedorController;
 use App\Http\Controllers\ViewController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,13 +27,15 @@ Route::get('/consulta', [ViewController::class,'consulta'])->name('consulta');
 Route::get('/ordersFail', [ViewController::class,'ordersFail'])->name('ordersFail');
 Route::get('/sendPostOrders', [ViewController::class,'index'])->name('SendDataforOneDoor');
 Route::get('/getInformationOrder',[consultaretController::class,'getInformationOrder'])->name('getInformationOrder');
-
 // ROTAS POST
 Route::get('/storeNewOrcamento',[consultaretController::class,'storeNewOrcamento'])->name('storeNewOrcamento');
 // ROTAS AJAX
 Route::get('/consultaret',[consultaretController::class,'consultaret'])->name('consultaret');
+Route::post('/SendOrderByColaborador',[SendOrderByColaborador::class,'StoreProdutidade'])->name('StoreProdutidade');
 // ROTAS RESOURCE
 Route::resource('/orders','App\Http\Controllers\Order\OrderController')->names('orders')->parameters(['orders'=> 'id']);
+Route::resource('/conflit','App\Http\Controllers\Order\OrderConflictController')->names('conflit')->parameters(['orders'=> 'id']);
+Route::resource('/vendedor','App\Http\Controllers\Vendedor\VendedorController')->names('vendedor')->parameters(['vendedor' => 'id']);
 
 Route::get('broadcast/{msg}', function($msg){
     broadcast(new channelPublico($msg));

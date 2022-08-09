@@ -11,7 +11,6 @@ class orcamentodados extends Model
 
     protected $table = 'orcamentodados';
 
-
     public static function VerifyNewOrder($order){
         $pesquisas = orcamentodados::where('ORCNUM',$order)->first();
         if($pesquisas){

@@ -112,7 +112,6 @@
 
             $('#baixo').change(function() {
                 const valorBaixo = $('#baixo').val();
-                console.log(valorBaixo);
             });
 
 
@@ -121,6 +120,7 @@
                 $('#content-form').addClass('d-none');
                 $('#content-complete').removeClass('d-none');
                 $('#completo').val('CFe' + $('#cima').val() + $('#baixo').val());
+                console.log($('#completo').val());
             });
 
 
@@ -179,9 +179,8 @@
                             });
 
                         } catch (error) {
-
+                            console.log(error);
                         }
-
                     },
                     error: function(error) {
                         console.log(error);
