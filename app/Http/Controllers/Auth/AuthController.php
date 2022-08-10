@@ -68,7 +68,9 @@ class AuthController implements RequestOnedoor
         if (isset($auth)) {
             if ($DateAmanha->format('Y-m-d H:i:s') < $data->format('Y-m-d H:i:s')) {
                 echo "ATUALIZOU";
-                DB::connection('ecommerce')->update("update token set access_token = '$access_token->access_token' where id = ?", [$auth->id]);
+                DB::connection('ecommerce')->table('token')
+                ->where('id',$auth->id)
+                ->update(['access_token' => $access_token->access_token]);
             }
         } else {
             $data = new DateTime();

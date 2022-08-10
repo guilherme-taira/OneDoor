@@ -58,3 +58,10 @@
     height: 2em;
   }
 }
+
+/* // COLORE A LINHA SEPARADA */
+
+#linhaSeparado{
+    background-color: 85fd00;
+    opacity: 0.5;
+}

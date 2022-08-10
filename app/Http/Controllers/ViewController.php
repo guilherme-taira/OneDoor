@@ -7,6 +7,7 @@ use App\Http\Controllers\Order\CreateController;
 use App\Http\Controllers\Order\GenerateNewOrderController;
 use App\Models\orcamentodados;
 use App\Models\orders;
+use App\Models\produtividade;
 use App\Models\User;
 use DateTime;
 use Hamcrest\Type\IsNumeric;
@@ -187,6 +188,10 @@ class ViewController extends Controller
                         $NewUser->cidade = $pesquisa['CIDNome'];
                         $NewUser->UF = $pesquisa['CIDUF'];
                         $NewUser->save();
+
+                        // BAIXA O PEDIDO
+                        produtividade::FinalyOrder($ORCAMENTO);
+
                     } catch (\Exception $e) {
                         echo $e->getMessage();
                         echo $e->getCode();

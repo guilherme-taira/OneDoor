@@ -11,16 +11,22 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-3">
+                        <a href="{{route('getProdutividade')}}"><button type="button" class="btn btn-warning">
+                            <i class="bi bi-bar-chart-line"></i>  Produtividade Total: <span class="badge bg-secondary">{{$total}}</span>
+                        </button></a>
+                    </div>
                     <div class="col-md-12">
                         <div class="table-wrap">
                             <table class="table myaccordion table-hover" style="padding: 50px;" id="accordion">
                                 <thead>
                                     <tr class="text-center">
                                         <th>Nº Cupom</th>
+                                        <th>Status</th>
                                         <th>Data</th>
                                         <th>Hora</th>
-                                        <th>Orçamento</th>
                                         <th>Cliente</th>
+                                        <th>Vendedor</th>
                                         <th>Colaborador</th>
                                     </tr>
                                 </thead>
@@ -29,6 +35,32 @@
                                         @if (isset($order['Error']))
                                             <div class="alert alert-danger">{{ $order['Error'] }}</div>
                                         @else
+                                            @if($order['flag_separado'] == 'X')
+                                            <tr id="linhaSeparado">
+                                                <td><input type="text"
+                                                        value="{{ $order['orcamento'] }}"name="orcamentoID"
+                                                        id="orcamentoID"></th>
+                                                <td class="badge bg-warning mt-1">SEPARAÇÃO</td>
+                                                <td class="text-center">{{ $order['dataorcamento'] }}</td>
+                                                <td class="text-center">{{ $order['orcamentohora'] }}</td>
+                                                <td class="text-center">{{ $order['cliente'] }}</td>
+                                                <td class="text-center">{{ $order['Nvendedor'] }}</td>
+                                                <td>
+                                                    <select class="form-select" id="colaboradorSelect"
+                                                        aria-label="Default select example">
+                                                        @if (count($vendedores) > 0)
+                                                            @foreach ($vendedores as $vendedor)
+                                                                @if($order['user_id'] == $vendedor->id)
+                                                                <option value="{{ $vendedor->id }}">{{ $vendedor->nome }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            <option value="1">DEFAULT</option>
+                                                        @endif
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            @else
                                             <tr id="linhaPedido">
                                                 <td><input type="text"
                                                         value="{{ $order['orcamento'] }}"name="orcamentoID"
@@ -54,6 +86,7 @@
                                                     </select>
                                                 </td>
                                             </tr>
+                                            @endif
                                         @endif
                                     @endforeach
 
@@ -101,8 +134,7 @@
                     },
                     success: function(response) {
                         // mostra os dados de retorno
-                        console.log(response);
-                        $(linhaPedido[item]).css("background-color", "#85fd00");
+                        window.location.reload();
                     },
                     error: function(error) {
                         console.log(error);

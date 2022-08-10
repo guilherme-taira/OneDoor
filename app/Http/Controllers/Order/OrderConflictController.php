@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Models\produtividade;
 use App\Models\vendedor;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,10 +22,12 @@ class OrderConflictController extends Controller
         $this->ConflitOrder();
         $vendedores = vendedor::getAllVendedor();
         $pedidos = produtividade::getAllOrders();
+        $totalPedidos = produtividade::getProdutividadeDaily();
 
         return view('view.conflit', [
             'vendedores' => $vendedores,
             'dados' => $pedidos,
+            'total' => $totalPedidos
         ]);
     }
 
@@ -98,11 +101,13 @@ class OrderConflictController extends Controller
     public function ConflitOrder()
     {
         try {
+            $date = new DateTime();
+
             $orders = DB::connection('odbc-ret')->table('RET305')
                 ->join('RET028', 'RET028.CLICod', '=', 'RET305.CLICOD')
                 ->join('RET501', 'RET028.CIDCod', '=', 'RET501.CIDCod')
                 ->select('ORCNUM', 'ORCDATA', "CLINome","ORCBAIXA","RET305.VENDCOD","ORCHR")
-                ->where("ORCDATA", '2022-08-08')
+                ->where("ORCDATA", $date->format('Y-m-d'))
                 ->distinct()
                 ->get();
 
@@ -131,7 +136,6 @@ class OrderConflictController extends Controller
         }
 
     }
-
 
     public function Vendas($ORCAMENTO)
     {

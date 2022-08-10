@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
 use App\Models\orders;
+use App\Models\produtividade;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -130,5 +131,14 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getProdutividade(){
+
+        $produtividades = produtividade::getProdutividade();
+
+        return view('view.produtividade.index',[
+            'produtividades' => $produtividades
+        ]);
     }
 }

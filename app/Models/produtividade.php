@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DateTime;
+use Illuminate\Support\Facades\DB;
 
 class produtividade extends Model
 {
@@ -21,8 +23,50 @@ class produtividade extends Model
     }
 
     public static function getAllOrders(){
-        $produtividade = produtividade::all();
+        $produtividade = produtividade::all()->where('flag_baixado','');
         return $produtividade;
     }
 
+    public static function FinalyOrder($ORCAMENTO){
+        $data = produtividade::where('orcamento',$ORCAMENTO)->first();
+        try {
+            produtividade::where('id',$data->id)->update(['flag_baixado'=>'X']);
+        } catch (\Exception $e) {
+            return response()->json(['dados' => $e->getMessage()]);
+        }
+    }
+
+    public static function getProdutividade(){
+        $today = new DateTime();
+        $today->modify('-1 day');
+
+        $data = DB::table('produtividade')
+        ->select(DB::raw('count(*) as quantidade, nome'))
+        ->join('vendedor','vendedor.id','=','produtividade.user_id')
+        ->where('flag_separado','X')
+        ->groupBy('user_id')
+        ->orderBy('quantidade','desc')
+        ->get();
+
+        return $data;
+    }
+
+    public static function getProdutividadeDaily(){
+        $today = new DateTime();
+
+        $orders = DB::table('produtividade')
+        ->select(DB::raw('count(*) as quantidade, nome, produtividade.created_at'))
+        ->join('vendedor','vendedor.id','=','produtividade.user_id')
+        ->where('flag_separado','X')
+        ->groupBy('user_id')
+        ->orderBy('quantidade','desc')
+        ->get();
+
+        $total = 0;
+        foreach ($orders as $order) {
+            $total += $order->quantidade;
+        }
+
+        return $total;
+    }
 }
