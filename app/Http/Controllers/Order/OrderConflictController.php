@@ -24,6 +24,7 @@ class OrderConflictController extends Controller
         $pedidos = produtividade::getAllOrders();
         $totalPedidos = produtividade::getProdutividadeDaily();
 
+        //print_r($this->ConflitOrder());
         return view('view.conflit', [
             'vendedores' => $vendedores,
             'dados' => $pedidos,
@@ -60,7 +61,7 @@ class OrderConflictController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -71,7 +72,7 @@ class OrderConflictController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -83,7 +84,9 @@ class OrderConflictController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+       produtividade::where('orcamento',$id)->update(['flag_baixado' => 'X']);
+       return redirect()->back()->with('msg',"Orçamento: $id Baixado com Sucesso!");
     }
 
     /**
@@ -105,9 +108,9 @@ class OrderConflictController extends Controller
 
             $orders = DB::connection('odbc-ret')->table('RET305')
                 ->join('RET028', 'RET028.CLICod', '=', 'RET305.CLICOD')
-                ->join('RET501', 'RET028.CIDCod', '=', 'RET501.CIDCod')
                 ->select('ORCNUM', 'ORCDATA', "CLINome","ORCBAIXA","RET305.VENDCOD","ORCHR")
                 ->where("ORCDATA", $date->format('Y-m-d'))
+                //->where('RET305.VENDCOD','029')
                 ->distinct()
                 ->get();
 

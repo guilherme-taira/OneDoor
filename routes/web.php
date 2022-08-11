@@ -35,7 +35,7 @@ Route::get('/consultaret',[consultaretController::class,'consultaret'])->name('c
 Route::post('/SendOrderByColaborador',[SendOrderByColaborador::class,'StoreProdutidade'])->name('StoreProdutidade');
 // ROTAS RESOURCE
 Route::resource('/orders','App\Http\Controllers\Order\OrderController')->names('orders')->parameters(['orders'=> 'id']);
-Route::resource('/conflit','App\Http\Controllers\Order\OrderConflictController')->names('conflit')->parameters(['orders'=> 'id']);
+Route::resource('/conflit','App\Http\Controllers\Order\OrderConflictController')->names('conflitador')->parameters(['conflit'=> 'id']);
 Route::resource('/vendedor','App\Http\Controllers\Vendedor\VendedorController')->names('vendedor')->parameters(['vendedor' => 'id']);
 
 Route::get('broadcast/{msg}', function($msg){

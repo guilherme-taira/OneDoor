@@ -30,7 +30,7 @@
                         <li class="nav-item"><a class="nav-link" href="{{route('orders.index')}}">Pedidos <i class="bi bi-box2-heart"></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('gravapedidos')}}">Integração <i class="bi bi-arrow-left-right"></i></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('orders.create')}}">Cadastro Manual<i class="bi bi-arrow-left-right"></i></i></a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{route('conflit.index')}}">Separar Pedidos<i class="bi bi-arrow-left-right"></i></i></a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{route('conflitador.index')}}">Separar Pedidos<i class="bi bi-arrow-left-right"></i></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('vendedor.index')}}">Colaboradores<i class="bi bi-arrow-left-right"></i></i></a></li>
                     </ul>
                 </div>
@@ -50,7 +50,7 @@
                       </div>
                 </div> --}}
 
-                <div class="container px-5">
+                <div class="container">
                     @yield('content')
                 </div>
             </section>

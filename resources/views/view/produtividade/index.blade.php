@@ -10,6 +10,7 @@
                         </h2>
                     </div>
                 </div>
+                @if($produtividades)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-wrap">
@@ -31,6 +32,9 @@
                             </table>
                         </div>
                     </div>
+                 @else
+                    <div class="alert alert-danger">Não Há dados de Produtividade Hoje!</div>
+                 @endif
         </section>
     </div>
 @endsection

@@ -23,7 +23,10 @@ class produtividade extends Model
     }
 
     public static function getAllOrders(){
-        $produtividade = produtividade::all()->where('flag_baixado','');
+        $produtividade = produtividade::
+        where('flag_baixado','')
+        ->orderBy('created_at','desc')->paginate(10);
+
         return $produtividade;
     }
 
@@ -38,12 +41,13 @@ class produtividade extends Model
 
     public static function getProdutividade(){
         $today = new DateTime();
-        $today->modify('-1 day');
+        // $today->modify('-1 day');
 
         $data = DB::table('produtividade')
         ->select(DB::raw('count(*) as quantidade, nome'))
         ->join('vendedor','vendedor.id','=','produtividade.user_id')
         ->where('flag_separado','X')
+        ->where('produtividade.created_at','LIKE','%'.$today->format('Y-m-d').'%')
         ->groupBy('user_id')
         ->orderBy('quantidade','desc')
         ->get();
@@ -58,6 +62,7 @@ class produtividade extends Model
         ->select(DB::raw('count(*) as quantidade, nome, produtividade.created_at'))
         ->join('vendedor','vendedor.id','=','produtividade.user_id')
         ->where('flag_separado','X')
+        ->where('produtividade.created_at','LIKE','%'.$today->format('Y-m-d').'%')
         ->groupBy('user_id')
         ->orderBy('quantidade','desc')
         ->get();

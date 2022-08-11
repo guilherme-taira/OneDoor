@@ -2,10 +2,17 @@
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}" />
     <div class="container">
-        <section class="ftco-section">
+
+        @if (session('msg'))
+             <div class="alert alert-success" role="alert">
+                 {{ session('msg') }}
+            </div>
+        @endif
+
+        <section>
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-md-6 text-center mb-4">
+                    <div class="col-md-6 text-center">
                         <h2 class="heading-section">Pedidos Em Aberto <div class="mt-4" id="loader"></div>
                         </h2>
                     </div>
@@ -18,7 +25,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="table-wrap">
-                            <table class="table myaccordion table-hover" style="padding: 50px;" id="accordion">
+                            <table class="table myaccordion table-hover py-2" style="padding: 80px;" id="accordion">
                                 <thead>
                                     <tr class="text-center">
                                         <th>Nº Cupom</th>
@@ -28,6 +35,7 @@
                                         <th>Cliente</th>
                                         <th>Vendedor</th>
                                         <th>Colaborador</th>
+                                        <th>Baixa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,6 +67,16 @@
                                                         @endif
                                                     </select>
                                                 </td>
+                                                <td>
+                                                    <!--- FORM BAIXA PEDIDO --->
+                                                        <form action="{{route('conflitador.update',['id' => $order['orcamento']])}}" method="post">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <input type="hidden" name="orcamento" value={{$order['orcamento']}}>
+                                                            <input type="submit" value="BAIXAR">
+                                                        </form>
+                                                    <!----     FINAL       ---->
+                                                </td>
                                             </tr>
                                             @else
                                             <tr id="linhaPedido">
@@ -85,6 +103,16 @@
                                                         @endif
                                                     </select>
                                                 </td>
+                                                <td>
+                                                     <!--- FORM BAIXA PEDIDO --->
+                                                    <form action="{{route('conflitador.update',['id' => $order['orcamento']])}}" method="post">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <input type="hidden" name="orcamento" value={{$order['orcamento']}}>
+                                                        <input type="submit" class="btn btn-primary btn-sm" value="BAIXAR">
+                                                    </form>
+                                                   <!----     FINAL       ---->
+                                            </td>
                                             </tr>
                                             @endif
                                         @endif
@@ -93,6 +121,11 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <div class="d-flex" style="padding: 20px;">
+                            {!! $dados->links() !!}
+                        </div>
+
                     </div>
                 </div>
             </div>
