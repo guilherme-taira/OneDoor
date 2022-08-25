@@ -84,7 +84,7 @@ class ViewController extends Controller
         // CAIXA 11
         try {
             // CAIXA 11
-            if (DB::connection('caixa13')) {
+            if (DB::connection('caixa11')) {
                 $pesquisas = DB::connection('caixa11')->table('PAF06')
                     ->whereBetween('DATA', [$data, $data])
                     ->where('ORCAMENTO', '!=', null)
