@@ -7,6 +7,7 @@ use App\Models\orders;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CreateController extends Controller
 {
@@ -265,7 +266,6 @@ class CreateController extends Controller
         print_r(json_decode($response, false));
         echo "HTTP CODE : " . $httpcode;
 
-
         // RESPONSE DECODIFICADO
         $res = json_decode($response, false);
 
@@ -273,7 +273,9 @@ class CreateController extends Controller
             if ($httpcode == '201') {
                 if (!empty($res->trackingUrl)) {
                     orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $res->trackingUrl. "-> $httpcode"]);
+                    Log::channel('onedoorError')->info($res->trackingUrl);
                 } else {
+                    Log::channel('onedoorError')->info($httpcode);
                     orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => "Cadastrado com sucesso! $httpcode"]);
                 }
             } else {
@@ -281,10 +283,17 @@ class CreateController extends Controller
                     try {
                         if($res->trackingUrl){ // SE TIVER SETADO O VALOR TRACKING URL REMOVE O ERRO
                             orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $res->trackingUrl]);
+                            Log::channel('onedoorError')->info($res->trackingUrl);
                         }
                     } catch (\Exception $e) {
-                        echo $e->getMessage();
-                        orders::where('ORCNUM', $this->getOrcamento())->update(['flag_erro' => 'X', 'Flag_Processado' => '', 'response' => json_encode($res)]);
+                        if($res){
+                            Log::channel('onedoorError')->info('SEM RESPOSTA NA REQUISICAO'.$e->getMessage().'--->'. $e->getCode());
+                            orders::where('ORCNUM', $this->getOrcamento())->update(['flag_erro' => 'X', 'Flag_Processado' => '', 'response' => json_encode($res)]);
+                        }else{
+                            // GRAVA O ERRO NO LOG
+                            Log::channel('onedoorError')->info($e->getMessage().'--->'. $e->getCode());
+                            orders::where('ORCNUM', $this->getOrcamento())->update(['flag_erro' => 'X', 'Flag_Processado' => '', 'response' => $e->getMessage()]);
+                        }
                     }
                 }
             }

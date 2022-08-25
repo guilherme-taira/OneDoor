@@ -113,6 +113,11 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'onedoorError' => [
+            'path' => storage_path('logs/onedoorlog.log'),
+            'level' => 'debug',
+        ],
     ],
 
 ];

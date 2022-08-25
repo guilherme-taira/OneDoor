@@ -46,7 +46,9 @@ class orders extends Model
     }
 
     public static function getAllDataPaginate(){
-        $pesquisas = orders::join('users', 'orders.client_id', '=', 'users.id')->paginate(10);
+        $pesquisas = orders::join('users', 'orders.client_id', '=', 'users.id')
+        ->orderBy('orders.id','desc')
+        ->paginate(10);
         return $pesquisas;
     }
 

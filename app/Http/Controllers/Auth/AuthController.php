@@ -47,7 +47,7 @@ class AuthController implements RequestOnedoor
 
         $DateAmanha = new DateTime($auth->DataModify);
         $DateAmanha->modify('+ 24hours');
-        print_r($DateAmanha);
+        //print_r($DateAmanha);
         // NOW
         $data = new DateTime();
         // DATA BANCO
