@@ -6,8 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\orders;
 use App\Models\produtividade;
 use App\Models\User;
+use App\Models\vendedor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Dompdf;
+
 
 class OrderController extends Controller
 {
@@ -140,5 +145,99 @@ class OrderController extends Controller
         return view('view.produtividade.index',[
             'produtividades' => $produtividades
         ]);
+    }
+
+    public function reportProdutividade(){
+        $vendedores = vendedor::getAllVendedor();
+
+        return view('view.produtividade.report',[
+            'vendedores' => $vendedores
+        ]);
+    }
+
+    public function generateprodutividadereport(){
+
+        $dados = produtividade::getProdutividadeAllReport();
+        echo "<pre>";
+
+        $data = [];
+        $nomes = [];
+        $quantidades = [];
+
+        $i = 0;
+        foreach ($dados as $value) {
+           if(!in_array(substr($value->created_at,0,10),$data)){
+                 $data[$i] = substr($value->created_at,0,10);
+                 $i++;
+           }
+        }
+
+        $i = 0;
+        foreach ($dados as $value) {
+            if(!in_array($value->nome,$nomes)){
+                  $nomes[$i] = $value->nome;
+                  $i++;
+            }
+         }
+
+        for ($j = 0; $j < count($data); $j++) {
+            for ($i = 0; $i < count($nomes); $i++) {
+                $total = 0;
+                foreach ($dados as $value) {
+                    if($data[$j] == substr($value->created_at,0,10))
+                    if ($nomes[$i] == $value->nome) {
+                        $total += $value->quantidade;
+                    }
+                }
+                $quantidades[$j]  = $total;
+
+                $arrays[$i][$j] = [
+                    'colaborador' => $nomes[$i],
+                        'Data' => $data[$j],
+                            'Quantidade' => $quantidades[$j],
+                ];
+            }
+        }
+
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('view.produtividade.responseReport',[
+            'dados' => $arrays
+        ]);
+
+        return $pdf->stream();
+    }
+
+    public function getEtiquetas(Request $request){
+
+        print_r($request->all());
+
+        $validator = Validator::make($request->all(),[
+            'orcamento' => 'required|numeric|min:0',
+            'volumes' => 'required|numeric',
+        ]);
+
+        $validator->errors();
+
+        if ($validator->fails()) {
+             return redirect()
+                        ->back()
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        //QUERY SQL
+        $order = orders::join('users','users.id','=','orders.client_id')
+        ->where('ORCNUM',$request->orcamento)->get();
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->setPaper('A6');
+        $pdf->loadView('view.produtividade.etiqueta',[
+            'dados' => $order,
+            'volumes' => $request->volumes,
+            'observacao' => $request->observacao,
+        ]);
+
+       return $pdf->stream();
     }
 }

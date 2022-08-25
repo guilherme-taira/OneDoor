@@ -40,102 +40,125 @@ class ViewController extends Controller
 
     public function gravapedidos()
     {
+
+
+
         $today = new DateTime();
         //$today->modify('-3 day');
         $data = $today->format('Y-m-d');
-
         // CAIXA 10
-        $pesquisas = DB::connection('caixa10')->table('PAF06')
-            ->whereBetween('DATA', [$data, $data])
-            ->where('ORCAMENTO', '!=', null)
-            ->distinct()
-            ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
-            ->get();
+        try {
+            // CAIXA 10
+            if (DB::connection('caixa10')) {
+                $pesquisas = DB::connection('caixa10')->table('PAF06')
+                    ->whereBetween('DATA', [$data, $data])
+                    ->where('ORCAMENTO', '!=', null)
+                    ->distinct()
+                    ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
+                    ->get();
 
-        foreach ($pesquisas as $value) {
-            //VERIFICA SE JÀ FOI CADASTRADO O ORÇAMENTO
-            if (orcamentodados::VerifyNewOrder($value['ORCAMENTO']) > 0) {
-                //echo "CADASTRADO COM SUCESSO!";
-                try {
-                    // $newOrder = new orcamentodados();
-                    // $newOrder->ORCNUM = $value['ORCAMENTO'];
-                    // $newOrder->data = $value['DATA'];
-                    // $newOrder->sat_chave = $value['SAT_CHAVE'];
-                    // $newOrder->vendedor = $value['VENDEDOR'];
-                    // $newOrder->terminal = $value['PDV'];
-                    // $newOrder->save();
-                    // ENVIA PARA A FILA O ORÇAMENTO
-                    $this->GravaBancoDados(($value['ORCAMENTO']));
-                    //\App\Jobs\sendOrcamentoViaApi::dispatch($value['ORCAMENTO']);
-                } catch (\Exception $e) {
-                    //echo "Erro ao gerar o pedido Orçamento: " . $value['ORCAMENTO'];
+                foreach ($pesquisas as $value) {
+                    //VERIFICA SE JÀ FOI CADASTRADO O ORÇAMENTO
+                    if (orcamentodados::VerifyNewOrder($value['ORCAMENTO']) > 0) {
+                        //echo "CADASTRADO COM SUCESSO!";
+                        try {
+                            // $newOrder = new orcamentodados();
+                            // $newOrder->ORCNUM = $value['ORCAMENTO'];
+                            // $newOrder->data = $value['DATA'];
+                            // $newOrder->sat_chave = $value['SAT_CHAVE'];
+                            // $newOrder->vendedor = $value['VENDEDOR'];
+                            // $newOrder->terminal = $value['PDV'];
+                            // $newOrder->save();
+                            // ENVIA PARA A FILA O ORÇAMENTO
+                            $this->GravaBancoDados(($value['ORCAMENTO']));
+                            //\App\Jobs\sendOrcamentoViaApi::dispatch($value['ORCAMENTO']);
+                        } catch (\Exception $e) {
+                            //echo "Erro ao gerar o pedido Orçamento: " . $value['ORCAMENTO'];
+                        }
+                    }
                 }
             }
+        } catch (\Exception $e) {
+            echo "CAIXA 10 DESCONECTADO!!";
         }
-
         // CAIXA 11
-        $pesquisas = DB::connection('caixa11')->table('PAF06')
-            ->whereBetween('DATA', [$data, $data])
-            ->where('ORCAMENTO', '!=', null)
-            ->distinct()
-            ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
-            ->get();
+        try {
+            // CAIXA 11
+            if (DB::connection('caixa13')) {
+                $pesquisas = DB::connection('caixa11')->table('PAF06')
+                    ->whereBetween('DATA', [$data, $data])
+                    ->where('ORCAMENTO', '!=', null)
+                    ->distinct()
+                    ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
+                    ->get();
 
-        foreach ($pesquisas as $value) {
-            //VERIFICA SE JÀ FOI CADASTRADO O ORÇAMENTO
-            if (orcamentodados::VerifyNewOrder($value['ORCAMENTO']) > 0) {
-                //echo "CADASTRADO COM SUCESSO!";
-                try {
-                    // $newOrder = new orcamentodados();
-                    // $newOrder->ORCNUM = $value['ORCAMENTO'];
-                    // $newOrder->data = $value['DATA'];
-                    // $newOrder->sat_chave = $value['SAT_CHAVE'];
-                    // $newOrder->vendedor = $value['VENDEDOR'];
-                    // $newOrder->terminal = $value['PDV'];
-                    // $newOrder->save();
-                    // ENVIA PARA A FILA O ORÇAMENTO
-                    $this->GravaBancoDados(($value['ORCAMENTO']));
-                    //\App\Jobs\sendOrcamentoViaApi::dispatch($value['ORCAMENTO']);
-                } catch (\Exception $e) {
-                    //echo "Erro ao gerar o pedido Orçamento: " . $value['ORCAMENTO'];
+                foreach ($pesquisas as $value) {
+                    //VERIFICA SE JÀ FOI CADASTRADO O ORÇAMENTO
+                    if (orcamentodados::VerifyNewOrder($value['ORCAMENTO']) > 0) {
+                        //echo "CADASTRADO COM SUCESSO!";
+                        try {
+                            // $newOrder = new orcamentodados();
+                            // $newOrder->ORCNUM = $value['ORCAMENTO'];
+                            // $newOrder->data = $value['DATA'];
+                            // $newOrder->sat_chave = $value['SAT_CHAVE'];
+                            // $newOrder->vendedor = $value['VENDEDOR'];
+                            // $newOrder->terminal = $value['PDV'];
+                            // $newOrder->save();
+                            // ENVIA PARA A FILA O ORÇAMENTO
+                            $this->GravaBancoDados(($value['ORCAMENTO']));
+                            //\App\Jobs\sendOrcamentoViaApi::dispatch($value['ORCAMENTO']);
+                        } catch (\Exception $e) {
+                            //echo "Erro ao gerar o pedido Orçamento: " . $value['ORCAMENTO'];
+                        }
+                    }
                 }
             }
+        } catch (\Exception $e) {
+            echo "CAIXA 11 DESCONECTADO!!";
         }
-
         // CAIXA 13
-        $pesquisas = DB::connection('caixa13')->table('PAF06')
-        ->whereBetween('DATA', [$data, $data])
-        ->where('ORCAMENTO', '!=', null)
-        ->distinct()
-        ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
-        ->get();
+        try {
+            // CAIXA 13
+            if (DB::connection('caixa13')) {
+                $pesquisas = DB::connection('caixa13')->table('PAF06')
+                    ->whereBetween('DATA', [$data, $data])
+                    ->where('ORCAMENTO', '!=', null)
+                    ->distinct()
+                    ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
+                    ->get();
 
-        foreach ($pesquisas as $value) {
-            //VERIFICA SE JÀ FOI CADASTRADO O ORÇAMENTO
-            if (orcamentodados::VerifyNewOrder($value['ORCAMENTO']) > 0) {
-                //echo "CADASTRADO COM SUCESSO!";
-                try {
-                    // $newOrder = new orcamentodados();
-                    // $newOrder->ORCNUM = $value['ORCAMENTO'];
-                    // $newOrder->data = $value['DATA'];
-                    // $newOrder->sat_chave = $value['SAT_CHAVE'];
-                    // $newOrder->vendedor = $value['VENDEDOR'];
-                    // $newOrder->terminal = $value['PDV'];
-                    // $newOrder->save();
-                    // ENVIA PARA A FILA O ORÇAMENTO
-                    $this->GravaBancoDados(($value['ORCAMENTO']));
-                    //\App\Jobs\sendOrcamentoViaApi::dispatch($value['ORCAMENTO']);
-                } catch (\Exception $e) {
-                    //echo "Erro ao gerar o pedido Orçamento: " . $value['ORCAMENTO'];
+                foreach ($pesquisas as $value) {
+                    //VERIFICA SE JÀ FOI CADASTRADO O ORÇAMENTO
+                    if (orcamentodados::VerifyNewOrder($value['ORCAMENTO']) > 0) {
+                        //echo "CADASTRADO COM SUCESSO!";
+                        try {
+                            // $newOrder = new orcamentodados();
+                            // $newOrder->ORCNUM = $value['ORCAMENTO'];
+                            // $newOrder->data = $value['DATA'];
+                            // $newOrder->sat_chave = $value['SAT_CHAVE'];
+                            // $newOrder->vendedor = $value['VENDEDOR'];
+                            // $newOrder->terminal = $value['PDV'];
+                            // $newOrder->save();
+                            // ENVIA PARA A FILA O ORÇAMENTO
+                            $this->GravaBancoDados(($value['ORCAMENTO']));
+                            //\App\Jobs\sendOrcamentoViaApi::dispatch($value['ORCAMENTO']);
+                        } catch (\Exception $e) {
+                            //echo "Erro ao gerar o pedido Orçamento: " . $value['ORCAMENTO'];
+                        }
+                    }
                 }
+
             }
+        } catch (\Exception $e) {
+            echo "CAIXA 13 DESCONECTADO!!";
         }
+
 
         $sendData = new GenerateNewOrderController();
         $sendData->NewOrder();
 
         // dados de orçamentos do dia
-        $orcamentodados = orcamentodados::where('created_at','LIKE','%'.$data.'%')->get();
+        $orcamentodados = orcamentodados::where('created_at', 'LIKE', '%' . $data . '%')->get();
 
         return view('view.gravapedidos', [
             'pedidos' => $orcamentodados
@@ -148,7 +171,8 @@ class ViewController extends Controller
         return view('view.consulta');
     }
 
-    public function GravaBancoDados($ORCAMENTO){
+    public function GravaBancoDados($ORCAMENTO)
+    {
 
         $pesquisas = DB::connection('odbc-ret')->table('RET305')
             ->join('RET028', 'RET028.CLICod', '=', 'RET305.CLICOD')
@@ -188,10 +212,6 @@ class ViewController extends Controller
                         $NewUser->cidade = $pesquisa['CIDNome'];
                         $NewUser->UF = $pesquisa['CIDUF'];
                         $NewUser->save();
-
-                        // BAIXA O PEDIDO
-                        produtividade::FinalyOrder($ORCAMENTO);
-
                     } catch (\Exception $e) {
                         echo $e->getMessage();
                         echo $e->getCode();
@@ -206,6 +226,9 @@ class ViewController extends Controller
                     $StoreData->HORASAIDA = $pesquisa['ORCHR'];
                     $StoreData->client_id = $NewUser->getID();
                     $StoreData->save();
+
+                    // BAIXA O PEDIDO
+                    produtividade::FinalyOrder($ORCAMENTO);
                 }
             }
         }
@@ -220,9 +243,9 @@ class ViewController extends Controller
 
         if (strlen(preg_replace($regex, $replacement, $telefone['CLIFone1'])) < 11) {
             return '5599999999999';
-        }else {
+        } else {
             $telefone = preg_replace($regex, $replacement, $telefone['CLIFone1']);
-            return '55'.$telefone;
+            return '55' . $telefone;
         }
     }
 
@@ -264,8 +287,5 @@ class ViewController extends Controller
         }
     }
 }
-
-
-
 
 //"abram/laravel-odbc": "dev-master",

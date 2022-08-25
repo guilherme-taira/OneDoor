@@ -68,13 +68,13 @@ class CreateController extends Controller
         $this->setTime($date->format('Y-m-d\TH:i:s.u'));
 
         // GET COORDENADAS GEOCODE API
-        $dadosjson = json_decode(json_encode($this->getGeoCode($this->getCity(),$this->getStreet(),$this->getNumber(),$this->getDistrict())));
+        $dadosjson = json_decode(json_encode($this->getGeoCode($this->getCity(), $this->getStreet(), $this->getNumber(), $this->getDistrict())));
 
         try {
             $Data = [
                 "companyId" => "62cd78c39f35ff21644973c0",
                 "number" => $this->getOrcamento(),
-                "forecastDeliveryDate" => $this->getTime().'Z', // format "2022-07-21T17:59:01.000Z"
+                "forecastDeliveryDate" => $this->getTime() . 'Z', // format "2022-07-21T17:59:01.000Z"
                 "deliveryCompanyName" => "Embaleme comércio de Emabalagem e Festas",
                 "deliveryCompanyId" => "62cd78c39f35ff21644973c0",
                 "sendSms" => "true",
@@ -151,7 +151,6 @@ class CreateController extends Controller
                     ]
                 ]
             ];
-
         } catch (\ErrorException $th) {
             $Data = [
                 "companyId" => "62cd78c39f35ff21644973c0",
@@ -262,15 +261,44 @@ class CreateController extends Controller
         $response = curl_exec($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        //print_r($response);
+        //echo "<pre>";
+        print_r(json_decode($response, false));
         echo "HTTP CODE : " . $httpcode;
-        if ($httpcode == '201') {
-            orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $response]);
-        } else {
-            orders::where('ORCNUM', $this->getOrcamento())->update(['flag_erro' => 'X', 'Flag_Processado' => '','response' => json_decode($response, true)]);
+
+
+        // RESPONSE DECODIFICADO
+        $res = json_decode($response, false);
+
+        try {
+            if ($httpcode == '201') {
+                if (!empty($res->trackingUrl)) {
+                    orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $res->trackingUrl. "-> $httpcode"]);
+                } else {
+                    orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => "Cadastrado com sucesso! $httpcode"]);
+                }
+            } else {
+                if (!empty($res)) { // SE A RESPOSTA NÂO TIVER VAZIA
+                    try {
+                        if($res->trackingUrl){ // SE TIVER SETADO O VALOR TRACKING URL REMOVE O ERRO
+                            orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $res->trackingUrl]);
+                        }
+                    } catch (\Exception $e) {
+                        echo $e->getMessage();
+                        orders::where('ORCNUM', $this->getOrcamento())->update(['flag_erro' => 'X', 'Flag_Processado' => '', 'response' => json_encode($res)]);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            // ERROR JSON
+        $error = [
+            "error" => [
+                "Message" => $e->getMessage(),
+                "StatusCode" => "$httpcode",
+            ],
+        ];
+            orders::where('ORCNUM', $this->getOrcamento())->update(['flag_erro' => 'X', 'Flag_Processado' => '', 'response' => json_encode($error)]);
         }
-        // echo "<pre>";
-        // print_r(json_decode($response, false));
+
     }
 
     /**
@@ -406,18 +434,20 @@ class CreateController extends Controller
     }
 
 
-    public function Endereco(array $endereco){
+    public function Endereco(array $endereco)
+    {
         $regex = "[ ]";
         $replecement = "+";
-        return preg_replace($regex,$replecement,$endereco['end']);
+        return preg_replace($regex, $replecement, $endereco['end']);
     }
 
-    public function getGeoCode($cidade,$rua,$numero,$bairro){
+    public function getGeoCode($cidade, $rua, $numero, $bairro)
+    {
 
         $endereco = [];
-        $endereco['end'] = $cidade .'+'.$rua.'+'.$numero.'+'.$bairro;
+        $endereco['end'] = $cidade . '+' . $rua . '+' . $numero . '+' . $bairro;
 
-        $endpoint2 = "https://maps.googleapis.com/maps/api/geocode/json?address=".$this->Endereco($endereco)."&key=AIzaSyAgtArGP-BFZEi-Rs5Wwi8CzSQtiZBjObU";
+        $endpoint2 = "https://maps.googleapis.com/maps/api/geocode/json?address=" . $this->Endereco($endereco) . "&key=AIzaSyAgtArGP-BFZEi-Rs5Wwi8CzSQtiZBjObU";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $endpoint2);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -438,8 +468,5 @@ class CreateController extends Controller
         } catch (\ErrorException $e) {
             echo $e->getMessage();
         }
-
-
     }
-
 }

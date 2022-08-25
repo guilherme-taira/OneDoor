@@ -1,11 +1,11 @@
 @extends('view.layout')
 @section('content')
-<meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <div class="container">
 
         @if (session('msg'))
-             <div class="alert alert-success" role="alert">
-                 {{ session('msg') }}
+            <div class="alert alert-success" role="alert">
+                {{ session('msg') }}
             </div>
         @endif
 
@@ -19,10 +19,10 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <a href="{{route('getProdutividade')}}"><button type="button" class="btn btn-warning">
-                            <i class="bi bi-bar-chart-line"></i>  Produtividade Total: <span class="badge bg-secondary">{{$total}}</span>
-                        </button></a>
+                        <a href="{{ route('getProdutividade') }}"><button type="button" class="btn btn-warning btn-sm text-decoration-none"><i class="bi bi-bar-chart-line"></i> Produtividade</button></a>
+                        <a href="{{ route('reportProdutividade') }}"><button type="button" class="btn btn-success btn-sm text-decoration-none"><i class="bi bi-book"></i> Relatórios</button></a>
                     </div>
+
                     <div class="col-md-12">
                         <div class="table-wrap">
                             <table class="table myaccordion table-hover py-2" style="padding: 80px;" id="accordion">
@@ -43,77 +43,86 @@
                                         @if (isset($order['Error']))
                                             <div class="alert alert-danger">{{ $order['Error'] }}</div>
                                         @else
-                                            @if($order['flag_separado'] == 'X')
-                                            <tr id="linhaSeparado">
-                                                <td><input type="text"
-                                                        value="{{ $order['orcamento'] }}"name="orcamentoID"
-                                                        id="orcamentoID"></th>
-                                                <td class="badge bg-warning mt-1">SEPARAÇÃO</td>
-                                                <td class="text-center">{{ $order['dataorcamento'] }}</td>
-                                                <td class="text-center">{{ $order['orcamentohora'] }}</td>
-                                                <td class="text-center">{{ $order['cliente'] }}</td>
-                                                <td class="text-center">{{ $order['Nvendedor'] }}</td>
-                                                <td>
-                                                    <select class="form-select" id="colaboradorSelect"
-                                                        aria-label="Default select example">
-                                                        @if (count($vendedores) > 0)
-                                                            @foreach ($vendedores as $vendedor)
-                                                                @if($order['user_id'] == $vendedor->id)
-                                                                <option value="{{ $vendedor->id }}">{{ $vendedor->nome }}</option>
-                                                                @endif
-                                                            @endforeach
-                                                        @else
-                                                            <option value="1">DEFAULT</option>
-                                                        @endif
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <!--- FORM BAIXA PEDIDO --->
-                                                        <form action="{{route('conflitador.update',['id' => $order['orcamento']])}}" method="post">
+                                            @if ($order['flag_separado'] == 'X')
+                                                <tr id="linhaSeparado">
+                                                    <td><input type="text"
+                                                            value="{{ $order['orcamento'] }}"name="orcamentoID"
+                                                            id="orcamentoID"></th>
+                                                    <td class="badge bg-warning mt-1">SEPARAÇÃO</td>
+                                                    <td class="text-center">{{ $order['dataorcamento'] }}</td>
+                                                    <td class="text-center">{{ $order['orcamentohora'] }}</td>
+                                                    <td class="text-center">{{ $order['cliente'] }}</td>
+                                                    <td class="text-center">{{ $order['Nvendedor'] }}</td>
+                                                    <td>
+                                                        <select class="form-select" id="colaboradorSelect"
+                                                            aria-label="Default select example">
+                                                            @if (count($vendedores) > 0)
+                                                                @foreach ($vendedores as $vendedor)
+                                                                    @if ($order['user_id'] == $vendedor->id)
+                                                                        <option value="{{ $vendedor->id }}">
+                                                                            {{ $vendedor->nome }}</option>
+                                                                    @endif
+                                                                @endforeach
+                                                            @else
+                                                                <option value="1">DEFAULT</option>
+                                                            @endif
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <!--- FORM BAIXA PEDIDO --->
+                                                        <form
+                                                            action="{{ route('conflitador.update', ['id' => $order['orcamento']]) }}"
+                                                            method="post">
                                                             @csrf
                                                             @method('PUT')
-                                                            <input type="hidden" name="orcamento" value={{$order['orcamento']}}>
+                                                            <input type="hidden" name="orcamento"
+                                                                value={{ $order['orcamento'] }}>
                                                             <input type="submit" value="BAIXAR">
                                                         </form>
-                                                    <!----     FINAL       ---->
-                                                </td>
-                                            </tr>
+                                                        <!----     FINAL       ---->
+                                                    </td>
+                                                </tr>
                                             @else
-                                            <tr id="linhaPedido">
-                                                <td><input type="text"
-                                                        value="{{ $order['orcamento'] }}"name="orcamentoID"
-                                                        id="orcamentoID"></th>
-                                                <td class="badge bg-danger mt-1">EM ABERTO</td>
-                                                <td class="text-center">{{ $order['dataorcamento'] }}</td>
-                                                <td class="text-center">{{ $order['orcamentohora'] }}</td>
-                                                <td class="text-center">{{ $order['cliente'] }}</td>
-                                                <td class="text-center">{{ $order['Nvendedor'] }}</td>
-                                                <td>
+                                                <tr id="linhaPedido">
+                                                    <td><input type="text"
+                                                            value="{{ $order['orcamento'] }}"name="orcamentoID"
+                                                            id="orcamentoID"></th>
+                                                    <td class="badge bg-danger mt-1">EM ABERTO</td>
+                                                    <td class="text-center">{{ $order['dataorcamento'] }}</td>
+                                                    <td class="text-center">{{ $order['orcamentohora'] }}</td>
+                                                    <td class="text-center">{{ $order['cliente'] }}</td>
+                                                    <td class="text-center">{{ $order['Nvendedor'] }}</td>
+                                                    <td>
 
-                                                    <select class="form-select" id="colaboradorSelect"
-                                                        aria-label="Default select example">
-                                                        <option value="" selected>Selecione..</option>
-                                                        @if (count($vendedores) > 0)
-                                                            @foreach ($vendedores as $vendedor)
-                                                                <option value="{{ $vendedor->id }}">{{ $vendedor->nome }}
-                                                                </option>
-                                                            @endforeach
-                                                        @else
-                                                            <option value="1">DEFAULT</option>
-                                                        @endif
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                     <!--- FORM BAIXA PEDIDO --->
-                                                    <form action="{{route('conflitador.update',['id' => $order['orcamento']])}}" method="post">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input type="hidden" name="orcamento" value={{$order['orcamento']}}>
-                                                        <input type="submit" class="btn btn-primary btn-sm" value="BAIXAR">
-                                                    </form>
-                                                   <!----     FINAL       ---->
-                                            </td>
-                                            </tr>
+                                                        <select class="form-select" id="colaboradorSelect"
+                                                            aria-label="Default select example">
+                                                            <option value="" selected>Selecione..</option>
+                                                            @if (count($vendedores) > 0)
+                                                                @foreach ($vendedores as $vendedor)
+                                                                    <option value="{{ $vendedor->id }}">
+                                                                        {{ $vendedor->nome }}
+                                                                    </option>
+                                                                @endforeach
+                                                            @else
+                                                                <option value="1">DEFAULT</option>
+                                                            @endif
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <!--- FORM BAIXA PEDIDO --->
+                                                        <form
+                                                            action="{{ route('conflitador.update', ['id' => $order['orcamento']]) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <input type="hidden" name="orcamento"
+                                                                value={{ $order['orcamento'] }}>
+                                                            <input type="submit" class="btn btn-primary btn-sm"
+                                                                value="BAIXAR">
+                                                        </form>
+                                                        <!----     FINAL       ---->
+                                                    </td>
+                                                </tr>
                                             @endif
                                         @endif
                                     @endforeach

@@ -74,4 +74,18 @@ class produtividade extends Model
 
         return $total;
     }
+
+    public static function getProdutividadeAllReport(){
+        $today = new DateTime();
+
+        $orders = DB::table('produtividade')
+        ->select(DB::raw('count(*) as quantidade, nome, produtividade.created_at'))
+        ->join('vendedor','vendedor.id','=','produtividade.user_id')
+        ->where('flag_separado','X')
+        ->where('produtividade.created_at','LIKE','%'.$today->format('Y-m').'%')
+        ->groupBy('created_at')
+        ->get();
+
+        return $orders;
+    }
 }

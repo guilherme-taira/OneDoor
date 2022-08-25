@@ -108,7 +108,7 @@ class OrderConflictController extends Controller
 
             $orders = DB::connection('odbc-ret')->table('RET305')
                 ->join('RET028', 'RET028.CLICod', '=', 'RET305.CLICOD')
-                ->select('ORCNUM', 'ORCDATA', "CLINome","ORCBAIXA","RET305.VENDCOD","ORCHR")
+                ->select('ORCNUM', 'ORCDATA', "CLINome","RET305.VENDCOD","ORCHR")
                 ->where("ORCDATA", $date->format('Y-m-d'))
                 //->where('RET305.VENDCOD','029')
                 ->distinct()
@@ -120,7 +120,7 @@ class OrderConflictController extends Controller
             try {
                 $vendedoras = [10,17,31,29];
                 foreach ($orders as $order) {
-                    if(!$order['ORCBAIXA'] && in_array($order['VENDCOD'],$vendedoras)){
+                    if(in_array($order['VENDCOD'],$vendedoras)){
                         if(!produtividade::VerifyNewOrcamento($order['ORCNUM']) > 0){
                             $newOrcamento = new produtividade();
                             $newOrcamento->orcamento = $order['ORCNUM'];

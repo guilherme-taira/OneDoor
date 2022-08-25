@@ -28,6 +28,9 @@ Route::get('/ordersFail', [ViewController::class,'ordersFail'])->name('ordersFai
 Route::get('/sendPostOrders', [ViewController::class,'index'])->name('SendDataforOneDoor');
 Route::get('/getInformationOrder',[consultaretController::class,'getInformationOrder'])->name('getInformationOrder');
 Route::get('/produtividade',[OrderController::class,'getProdutividade'])->name('getProdutividade');
+Route::get('/reportprodutividade',[OrderController::class,'reportProdutividade'])->name('reportProdutividade');
+Route::get('/generateprodutividadereport',[OrderController::class,'generateprodutividadereport'])->name('generateprodutividadereport');
+Route::get('/etiqueta',[OrderController::class,'getEtiquetas'])->name('getetiqueta');
 // ROTAS POST
 Route::get('/storeNewOrcamento',[consultaretController::class,'storeNewOrcamento'])->name('storeNewOrcamento');
 // ROTAS AJAX
