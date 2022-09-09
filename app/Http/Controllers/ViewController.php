@@ -54,10 +54,11 @@ class ViewController extends Controller
                     ->whereBetween('DATA', [$data, $data])
                     ->where('ORCAMENTO', '!=', null)
                     ->distinct()
-                    ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
+                    ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR','SAICupom')
                     ->get();
 
                 foreach ($pesquisas as $value) {
+                    print_r($value);
                     //VERIFICA SE JÀ FOI CADASTRADO O ORÇAMENTO
                     if (orcamentodados::VerifyNewOrder($value['ORCAMENTO']) > 0) {
                         //echo "CADASTRADO COM SUCESSO!";
@@ -89,7 +90,7 @@ class ViewController extends Controller
                     ->whereBetween('DATA', [$data, $data])
                     ->where('ORCAMENTO', '!=', null)
                     ->distinct()
-                    ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
+                    ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR','SAICupom')
                     ->get();
 
                 foreach ($pesquisas as $value) {
@@ -124,7 +125,7 @@ class ViewController extends Controller
                     ->whereBetween('DATA', [$data, $data])
                     ->where('ORCAMENTO', '!=', null)
                     ->distinct()
-                    ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
+                    ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR','SAICupom')
                     ->get();
 
                 foreach ($pesquisas as $value) {
@@ -177,7 +178,7 @@ class ViewController extends Controller
         $pesquisas = DB::connection('odbc-ret')->table('RET305')
             ->join('RET028', 'RET028.CLICod', '=', 'RET305.CLICOD')
             ->join('RET501', 'RET028.CIDCod', '=', 'RET501.CIDCod')
-            ->select("CLINome", "CLICPF", "CLIRG", "CLICNPJ", "CLIEmail", "CLIEnd", "CLICep", "CLIBairro", "CLINUMERO", "CIDNome", "CIDUF", "CLIRef", "ORCNUM", "PRODTOTAL", "PRODQTDE", "ORCDESCONTO", "ORCHR", "CLIFone1", "CLIFone2")
+            ->select("CLINome", "CLICPF", "CLIRG", "CLICNPJ", "CLIEmail", "CLIEnd", "CLICep", "CLIBairro", "CLINUMERO", "CIDNome", "CIDUF", "CLIRef", "ORCNUM", "PRODTOTAL", "PRODQTDE", "ORCDESCONTO", "ORCHR", "CLIFone1", "CLIFone2","CLICOD")
             ->where('ORCNUM', '=', $ORCAMENTO)
             ->get();
 
@@ -224,7 +225,7 @@ class ViewController extends Controller
                     $StoreData->ORCNUM = isset($ORCAMENTO) ? $ORCAMENTO : uniqid();
                     $StoreData->desconto = $pesquisa['ORCDESCONTO'];
                     $StoreData->HORASAIDA = $pesquisa['ORCHR'];
-                    $StoreData->client_id = $NewUser->getID();
+                    $StoreData->client_id = $pesquisa['CLICOD'];
                     $StoreData->save();
 
                     // BAIXA O PEDIDO

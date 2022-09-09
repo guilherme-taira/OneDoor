@@ -3,6 +3,7 @@
 use App\Events\channelPublico;
 use App\Http\Controllers\ajax\consultaretController;
 use App\Http\Controllers\Ajax\SendOrderByColaborador;
+use App\Http\Controllers\Order\OrderAllDataController;
 use App\Http\Controllers\Order\OrderConflictController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Vendedor\VendedorController;
@@ -31,6 +32,7 @@ Route::get('/produtividade',[OrderController::class,'getProdutividade'])->name('
 Route::get('/reportprodutividade',[OrderController::class,'reportProdutividade'])->name('reportProdutividade');
 Route::get('/generateprodutividadereport',[OrderController::class,'generateprodutividadereport'])->name('generateprodutividadereport');
 Route::get('/etiqueta',[OrderController::class,'getEtiquetas'])->name('getetiqueta');
+Route::get('/listallOrderFinished',[OrderAllDataController::class,'listallOrder'])->name('listaPedidosFinalizados');
 // ROTAS POST
 Route::get('/storeNewOrcamento',[consultaretController::class,'storeNewOrcamento'])->name('storeNewOrcamento');
 // ROTAS AJAX

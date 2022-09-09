@@ -108,9 +108,9 @@ class OrderConflictController extends Controller
 
             $orders = DB::connection('odbc-ret')->table('RET305')
                 ->join('RET028', 'RET028.CLICod', '=', 'RET305.CLICOD')
-                ->select('ORCNUM', 'ORCDATA', "CLINome","RET305.VENDCOD","ORCHR")
+                ->select('ORCNUM', 'ORCDATA', "CLINome","RET305.VENDCOD","ORCHR","ORCTIPO")
                 ->where("ORCDATA", $date->format('Y-m-d'))
-                //->where('RET305.VENDCOD','029')
+                ->where("ORCTIPO",'P')
                 ->distinct()
                 ->get();
 
@@ -118,7 +118,7 @@ class OrderConflictController extends Controller
             $dados = [];
 
             try {
-                $vendedoras = [10,17,31,29];
+                $vendedoras = [10,17,31,29,100];
                 foreach ($orders as $order) {
                     if(in_array($order['VENDCOD'],$vendedoras)){
                         if(!produtividade::VerifyNewOrcamento($order['ORCNUM']) > 0){
@@ -132,10 +132,12 @@ class OrderConflictController extends Controller
                         }
                     }
                 }
-            } catch (\Throwable $th) {
+            } catch (\Exception $e) {
+                echo $e->getMessage();
                 $dados['Error'] = "Error Servidor Desconectado!";
             }
-        } catch (\Exception $th) {
+        } catch (\Exception $e) {
+            echo $e->getMessage();
         }
 
     }

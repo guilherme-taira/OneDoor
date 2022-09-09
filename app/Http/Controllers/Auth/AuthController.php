@@ -28,7 +28,6 @@ class AuthController implements RequestOnedoor
         // ENDPOINT PARA REQUISICAO
         $endpoint = self::URL_BASE_ONDEDOOR . $resource;
 
-
         $Data = [
             "client_id" => env('ONEDOOR_CLIENT_ID'), // PROD env('ONEDOOR_CLIENT_ID')
             "client_secret" => env('ONEDOOR_CLIENT_SECRET'), // PROD env('ONEDOOR_CLIENT_SECRET')

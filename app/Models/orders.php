@@ -73,4 +73,15 @@ class orders extends Model
         $decode = json_decode($hours);
         return $decode->HORASAIDA;
     }
+
+
+    public static function listAllOrderFinished(){
+
+        /**
+         *  LISTA TODOS OS PEDIDOS QUE NÃO ESTÃO BAIXADOS
+         */
+
+        $pesquisas = orders::where('flag_finalizado','=','')->paginate(10);
+        return $pesquisas;
+    }
 }
