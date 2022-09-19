@@ -2,10 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class AlterOrderDataHoraEntrega extends Migration
+class AlterOrderPriceOrc extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +13,8 @@ class AlterOrderDataHoraEntrega extends Migration
      */
     public function up()
     {
-
         Schema::table('orders',function(Blueprint $table) {
-            $table->dateTime('dataHoraEntrega')->nullable();
-            $table->string('cupomFiscal')->nullable();
+            $table->float('valorPago')->nullable();
         });
     }
 
@@ -28,9 +25,8 @@ class AlterOrderDataHoraEntrega extends Migration
      */
     public function down()
     {
-        Schema::table('orders',function(Blueprint $table) {
-            $table->dropColumn(['dataHoraEntrega']);
-            $table->dropColumn(['cupomFiscal']);
+        Schema::table('orders',function(Blueprint $table){
+            $table->dropColumn('valorPago');
         });
     }
 }

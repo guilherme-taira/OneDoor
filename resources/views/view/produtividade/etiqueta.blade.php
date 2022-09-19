@@ -17,6 +17,10 @@
         .page-break {
             page-break-before: always;
         }
+
+        .light{
+            font-weight: inherit;
+        }
     </style>
 </head>
 
@@ -37,7 +41,7 @@
                         <hr>
                         <p>Observações: {{ $observacao }}</p>
                     @endif
-                    <p>Facebook @embalemefestas, Instagram: @embalemefestas Telefone: (19) 3571-3311</p>
+                    <p class="light">Facebook @embalemefestas, Instagram: @embalemefestas Telefone: (19) 3571-3311</p>
                 </div>
             </div>
             @if ($i < $volumes)

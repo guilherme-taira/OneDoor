@@ -29,7 +29,7 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
         <div class="container px-5">
-            <a class="navbar-brand" href="#page-top"><i class="bi bi-door-open"></i> OneDoor - Embaleme</a>
+            <a class="navbar-brand" href="#page-top"><i class="bi bi-door-open"></i> EXPEDIÇÃO - Embaleme</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
                     class="navbar-toggler-icon"></span></button>
@@ -48,8 +48,8 @@
                 <div class="row gx-5 align-items-center">
                     <div class="col-lg-6 order-lg-1">
                         <div class="p-5">
-                            <h2 class="display-4">Gerenciado de Pedidos para Sistema OneDoor</h2>
-                            <p>Integração Onedoor <-> Embaleme {{ date('Y') }}</p>
+                            <h2 class="display-4">Gerenciado de Pedidos Expedição</h2>
+                            <p>Integração Expedição <-> Embaleme {{ date('Y') }}</p>
                         </div>
                     </div>
                 </div>

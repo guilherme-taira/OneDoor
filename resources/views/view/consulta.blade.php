@@ -53,7 +53,6 @@
         });
 
 
-
         $("#name").keyup(function() {
             var name = $("#name").val();
             $.ajax({

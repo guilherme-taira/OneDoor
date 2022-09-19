@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Models\orders;
 use App\Models\produtividade;
+use App\Models\table_status;
 use App\Models\User;
 use App\Models\vendedor;
 use Illuminate\Http\Request;
@@ -24,8 +25,12 @@ class OrderController extends Controller
     public function index()
     {
         $orders = orders::getAllDataPaginate();
+        $status = table_status::all();
+
+
         return view('view.orders',[
-            'orders' => $orders
+            'orders' => $orders,
+            'status' => $status
         ]);
     }
 
@@ -239,5 +244,24 @@ class OrderController extends Controller
         ]);
 
        return $pdf->stream();
+    }
+
+
+    public function getWaitingOrder(){
+
+        // PEGA TODOS OS PEDIDSO EM AGUARDANDO
+        $orders = orders::getWaitingOrders();
+
+        return view('view.baixaPedido',[
+            'orders' => $orders,
+        ]);
+    }
+
+    public function UpdatePaymentForm(Request $request){
+       $atualizacao =  orders::where('ORCNUM',$request->OrcNum)->update(['formaPagamento' => $request->PaymentForm]);
+       if($atualizacao){
+          return redirect()->back()->with('msg', 'Pedido Atualizado com Sucesso!');
+       }
+       return redirect()->back()->with('msg', 'Pedido Atualizado com Sucesso!');
     }
 }

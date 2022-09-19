@@ -18,9 +18,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-12">
                         <a href="{{ route('getProdutividade') }}"><button type="button" class="btn btn-warning btn-sm text-decoration-none"><i class="bi bi-bar-chart-line"></i> Produtividade</button></a>
                         <a href="{{ route('reportProdutividade') }}"><button type="button" class="btn btn-success btn-sm text-decoration-none"><i class="bi bi-book"></i> Relatórios</button></a>
+                        <a href="{{ route('vendedor.create') }}"><button type="button" class="btn btn-success btn-sm text-decoration-none"><i class="bi bi-person-plus-fill"></i> Cadastrar Novo Colaborador</button></a>
                     </div>
 
                     <div class="col-md-12">

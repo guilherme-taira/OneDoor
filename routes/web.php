@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\channelPublico;
+use App\Http\Controllers\ajax\ChangeStatusOrderController;
 use App\Http\Controllers\ajax\consultaretController;
 use App\Http\Controllers\Ajax\SendOrderByColaborador;
 use App\Http\Controllers\Order\OrderAllDataController;
@@ -33,9 +34,13 @@ Route::get('/reportprodutividade',[OrderController::class,'reportProdutividade']
 Route::get('/generateprodutividadereport',[OrderController::class,'generateprodutividadereport'])->name('generateprodutividadereport');
 Route::get('/etiqueta',[OrderController::class,'getEtiquetas'])->name('getetiqueta');
 Route::get('/listallOrderFinished',[OrderAllDataController::class,'listallOrder'])->name('listaPedidosFinalizados');
+Route::get('/reportFinishedOrder',[OrderAllDataController::class,'getDataForm'])->name('formFinishedOrder');
+Route::get('/baixaPedidos',[OrderController::class,'getWaitingOrder'])->name('getWaitingOrder');
 // ROTAS POST
+Route::put('/UpdatePaymentForm',[OrderController::class,'UpdatePaymentForm'])->name('updatepaymentform');
 Route::get('/storeNewOrcamento',[consultaretController::class,'storeNewOrcamento'])->name('storeNewOrcamento');
 // ROTAS AJAX
+Route::post('/ChangeStatusOrder',[ChangeStatusOrderController::class,'ChangeStatus'])->name('ChangeStatus');
 Route::get('/consultaret',[consultaretController::class,'consultaret'])->name('consultaret');
 Route::post('/SendOrderByColaborador',[SendOrderByColaborador::class,'StoreProdutidade'])->name('StoreProdutidade');
 // ROTAS RESOURCE

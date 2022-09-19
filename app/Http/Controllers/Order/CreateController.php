@@ -272,7 +272,7 @@ class CreateController extends Controller
         try {
             if ($httpcode == '201') {
                 if (!empty($res->trackingUrl)) {
-                    orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $res->trackingUrl. "-> $httpcode",'id_pedido' => $res->id]);
+                    orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $res->trackingUrl. "-> $httpcode",'id_pedido' => $res->id,'flag_aguardando' => 'X']);
                     Log::channel('onedoorError')->info($res->trackingUrl);
                 } else {
                     Log::channel('onedoorError')->info($httpcode);
@@ -282,7 +282,7 @@ class CreateController extends Controller
                 if (!empty($res)) { // SE A RESPOSTA NÂO TIVER VAZIA
                     try {
                         if($res->trackingUrl){ // SE TIVER SETADO O VALOR TRACKING URL REMOVE O ERRO
-                            orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $res->trackingUrl,'id_pedido' => $res->id]);
+                            orders::where('ORCNUM', $this->getOrcamento())->update(['Flag_Processado' => '', 'response' => $res->trackingUrl. "-> $httpcode",'id_pedido' => $res->id,'flag_aguardando' => 'X']);
                             Log::channel('onedoorError')->info($res->trackingUrl);
                         }
                     } catch (\Exception $e) {

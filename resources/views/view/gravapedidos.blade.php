@@ -7,9 +7,28 @@
                     <div class="col-md-6 text-center mb-4">
                         <h2 class="heading-section" id="loader">Pedidos </h2>
                     </div>
+
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header bg-primary">
+                            PDV LOGADOS
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            @foreach ($pdvs as $pdv)
+                                @if(isset($pdv['erro']))
+                                    <li class="badge bg-danger mt-2 py-2">{{$pdv['erro']}}</li>
+                                @else
+                                    <li class="badge bg-success mt-2 py-2">{{$pdv}} </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                        </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
+                        <div class="col-md-3">
+                            <a href="{{ route('getProdutividade') }}"><button type="button" class="btn btn-warning btn-sm text-decoration-none"><i class="bi bi-bar-chart-line"></i> Baixar Pedidos</button></a>
+                            <a href="{{ route('reportProdutividade') }}"><button type="button" class="btn btn-success btn-sm text-decoration-none"><i class="bi bi-book"></i> Relatórios</button></a>
+                        </div>
                         <div class="table-wrap">
                             <table class="table myaccordion table-hover" style="padding: 50px;" id="accordion">
                                 <thead>

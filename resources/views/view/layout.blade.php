@@ -22,16 +22,14 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
             <div class="container px-5">
-                <a class="navbar-brand" href="{{route('home')}}"> <i class="bi bi-door-open"></i> OneDoor <-> Embaleme </a>
+                <a class="navbar-brand" href="{{route('home')}}"> <i class="bi bi-door-open"></i> Expedição <-> Embaleme </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="{{route('ordersFail')}}">Pedidos com Erros <i class="bi bi-asterisk"></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('orders.index')}}">Pedidos <i class="bi bi-box2-heart"></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('gravapedidos')}}">Integração <i class="bi bi-arrow-left-right"></i></i></a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{route('orders.create')}}">Cadastro Manual<i class="bi bi-arrow-left-right"></i></i></a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{route('listaPedidosFinalizados')}}">Relatório Financeiro <i class="bi bi-receipt"></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('conflitador.index')}}">Separar Pedidos<i class="bi bi-arrow-left-right"></i></i></a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{route('vendedor.index')}}">Colaboradores<i class="bi bi-arrow-left-right"></i></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -39,17 +37,6 @@
         <!-- Header-->
         <header class="masthead text-center text-white">
             <section id="scroll">
-                {{-- <div class="container">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-header bg-primary">
-                          PDV LOGADOS
-                        </div>
-                        <ul class="list-group list-group-flush" id="publico">
-
-                        </ul>
-                      </div>
-                </div> --}}
-
                 <div class="container">
                     @yield('content')
                 </div>
