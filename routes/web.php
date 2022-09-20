@@ -3,10 +3,12 @@
 use App\Events\channelPublico;
 use App\Http\Controllers\ajax\ChangeStatusOrderController;
 use App\Http\Controllers\ajax\consultaretController;
+use App\Http\Controllers\ajax\GetallOrderByClientId;
 use App\Http\Controllers\Ajax\SendOrderByColaborador;
 use App\Http\Controllers\Order\OrderAllDataController;
 use App\Http\Controllers\Order\OrderConflictController;
 use App\Http\Controllers\Order\OrderController;
+use App\Http\Controllers\Rotas\RotaController;
 use App\Http\Controllers\Vendedor\VendedorController;
 use App\Http\Controllers\ViewController;
 use Illuminate\Support\Facades\Route;
@@ -36,18 +38,25 @@ Route::get('/etiqueta',[OrderController::class,'getEtiquetas'])->name('getetique
 Route::get('/listallOrderFinished',[OrderAllDataController::class,'listallOrder'])->name('listaPedidosFinalizados');
 Route::get('/reportFinishedOrder',[OrderAllDataController::class,'getDataForm'])->name('formFinishedOrder');
 Route::get('/baixaPedidos',[OrderController::class,'getWaitingOrder'])->name('getWaitingOrder');
+Route::get('/allRotas',[OrderController::class,'allRotas'])->name('allRotas');
 // ROTAS POST
+Route::get('/baixarPedidosRota/{id}',[OrderController::class,'BaixaRemessa'])->name('baixarPedidosRota');
 Route::put('/UpdatePaymentForm',[OrderController::class,'UpdatePaymentForm'])->name('updatepaymentform');
 Route::get('/storeNewOrcamento',[consultaretController::class,'storeNewOrcamento'])->name('storeNewOrcamento');
 // ROTAS AJAX
+Route::get('/getAllDataOrderClientById',[GetallOrderByClientId::class,'getAllDataOrderClientById'])->name('getAllDataOrderClientById');
 Route::post('/ChangeStatusOrder',[ChangeStatusOrderController::class,'ChangeStatus'])->name('ChangeStatus');
 Route::get('/consultaret',[consultaretController::class,'consultaret'])->name('consultaret');
 Route::post('/SendOrderByColaborador',[SendOrderByColaborador::class,'StoreProdutidade'])->name('StoreProdutidade');
+// ROTAS DE SESSAO
+Route::get('/setSessionRoute',[RotaController::class,'setSessionRoute'])->name('setSessionRoute');
+Route::get('/DeleteOrderSessionRoute/{id}',[RotaController::class,'DeleteOrderSessionRoute'])->name('deleteSessionRoute');
+Route::get('/StoreRota',[RotaController::class,'StoreRota'])->name('StoreRota');
 // ROTAS RESOURCE
 Route::resource('/orders','App\Http\Controllers\Order\OrderController')->names('orders')->parameters(['orders'=> 'id']);
 Route::resource('/conflit','App\Http\Controllers\Order\OrderConflictController')->names('conflitador')->parameters(['conflit'=> 'id']);
 Route::resource('/vendedor','App\Http\Controllers\Vendedor\VendedorController')->names('vendedor')->parameters(['vendedor' => 'id']);
-
+Route::resource('/rotas','App\Http\Controllers\Rotas\RotaController')->names('rotas')->parameters(['rotas' => 'id']);
 Route::get('broadcast/{msg}', function($msg){
     broadcast(new channelPublico($msg));
 });

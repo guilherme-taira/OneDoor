@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Models\orders;
 use App\Models\produtividade;
+use App\Models\table_rotas;
 use App\Models\table_status;
 use App\Models\User;
 use App\Models\vendedor;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf;
+use DateTime;
 use Dompdf\Dompdf;
 
 
@@ -264,4 +266,23 @@ class OrderController extends Controller
        }
        return redirect()->back()->with('msg', 'Pedido Atualizado com Sucesso!');
     }
+
+
+    public function allRotas(){
+        $datas = table_rotas::getAllRotas();
+
+        return view('view.allRotas',['remessas' => $datas]);
+    }
+
+    public function BaixaRemessa(Request $request){
+
+        $now = new DateTime();
+        $baixaPedidos = table_rotas::where('remessa',$request->id)->get();
+        foreach ($baixaPedidos as $pedidos) {
+            table_rotas::where('id',$pedidos->id)->update(['baixado' => 'X', 'dateFinished' => $now->format('Y-m-d H:i:s')]);
+        }
+
+        return back();
+    }
+
 }

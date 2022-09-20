@@ -30,6 +30,7 @@
                         <li class="nav-item"><a class="nav-link" href="{{route('gravapedidos')}}">Integração <i class="bi bi-arrow-left-right"></i></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('listaPedidosFinalizados')}}">Relatório Financeiro <i class="bi bi-receipt"></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('conflitador.index')}}">Separar Pedidos<i class="bi bi-arrow-left-right"></i></i></a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{route('rotas.index')}}">Fazer Rotas<i class="bi bi-arrow-left-right"></i></i></a></li>
                     </ul>
                 </div>
             </div>

@@ -66,6 +66,7 @@ class OrderGetDataController implements RequestHttp
                         print_r($value);
                     }
                 }
+
                 /**
                  *  IMPLEMENTAÇÃO DE FINALIZADO
                  */
