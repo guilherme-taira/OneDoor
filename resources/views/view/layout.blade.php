@@ -26,11 +26,11 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="{{route('orders.index')}}">Pedidos <i class="bi bi-box2-heart"></i></a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{route('gravapedidos')}}">Integração <i class="bi bi-arrow-left-right"></i></i></a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{route('listaPedidosFinalizados')}}">Relatório Financeiro <i class="bi bi-receipt"></i></a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{route('conflitador.index')}}">Separar Pedidos<i class="bi bi-arrow-left-right"></i></i></a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{route('rotas.index')}}">Fazer Rotas<i class="bi bi-arrow-left-right"></i></i></a></li>
+                        <li class="nav-item"><a class="nav-link" target="blank" href="{{route('orders.index')}}">Pedidos <i class="bi bi-box2-heart"></i></a></li>
+                        <li class="nav-item"><a class="nav-link" target="blank" href="{{route('gravapedidos')}}">Integração <i class="bi bi-arrow-left-right"></i></i></a></li>
+                        <li class="nav-item"><a class="nav-link" target="blank" href="{{route('listaPedidosFinalizados')}}">Relatório Financeiro <i class="bi bi-receipt"></i></a></li>
+                        <li class="nav-item"><a class="nav-link" target="blank" href="{{route('conflitador.index')}}">Separar Pedidos<i class="bi bi-arrow-left-right"></i></i></a></li>
+                        <li class="nav-item"><a class="nav-link" target="blank" href="{{route('rotas.index')}}">Fazer Rotas<i class="bi bi-arrow-left-right"></i></i></a></li>
                     </ul>
                 </div>
             </div>

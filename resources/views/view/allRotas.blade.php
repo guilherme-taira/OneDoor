@@ -19,12 +19,12 @@
                     @foreach ($remessas as $remessa)
 
                     <div class="col-sm-6">
-                        <div class="card">
+                        <div class='card {{isset($remessa->dateFinished) ? "p-3 mb-2 bg-dark text-white" : "p-3 mb-2 bg-secondary text-dark"}}'>
                             <div class="card-body">
-                                <h5 class="card-title text-dark">Remessa: {{$remessa->remessa}}</h5>
-                                <p class="card-text text-dark"> Inicio : {{$remessa->dateStart}} Término : {{$remessa->dateFinished}}
+                                <h5 class="card-title text-white">Remessa: {{$remessa->remessa}}</h5>
+                                <p class="card-text text-white"><span class="badge bg-primary"> Inicio : {{$remessa->dateStart}} </span> |  <span class="badge bg-success"> Término : {{$remessa->dateFinished}} </span>
                                 </p>
-                                <a href="{{route('rotas.show',['id' => $remessa->remessa])}}" class="btn btn-primary">Ver Mais</a>
+                                <a href="{{route('rotas.show',['id' => $remessa->remessa])}}" class="btn btn-warning">Ver Mais</a>
                                 <a href="{{route('baixarPedidosRota',['id' => $remessa->remessa])}}" class="btn btn-success">Baixar</a>
                             </div>
                         </div>

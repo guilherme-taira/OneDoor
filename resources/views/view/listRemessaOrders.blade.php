@@ -16,16 +16,29 @@
 
                 <!---- CONTENT ---->
                 <div class="row">
-                    <div class="card">
-                        <div class="card-header">
 
-                        </div>
-                        <ol class="list-group list-group-flush">
-                            @foreach ($remessas as $remessa)
-                                <li class="list-group-item">Nome: {{$remessa->name}} - Horário: {{$remessa->dateStart}}</li>
-                            @endforeach
-                        </ol>
-                    </div>
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Codigo Cliente</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Cadastrado</th>
+                                <th scope="col">Remessa</th>
+                            </tr>
+                        </thead>
+
+                        @foreach ($remessas as $remessa)
+                            <tr>
+                                <td>{{ $remessa->codcli }}</td>
+                                <td>{{ $remessa->name }}</td>
+                                <td>{{ $remessa->dateStart }}</td>
+                                <td>{{ $remessa->remessa }}</td>
+                            </tr>
+                        @endforeach
+
+                        </tbody>
+                    </table>
+
                 </div>
         </section>
 
