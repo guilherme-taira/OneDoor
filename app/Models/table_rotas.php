@@ -18,7 +18,8 @@ class table_rotas extends Model
     }
 
     public static function getAllRotas(){
-        $data = table_rotas::groupby('remessa')->orderby('dateStart','desc')->get();
+        $data = table_rotas::join('entregador','table_rotas.id_motorista','=','entregador.id')
+        ->groupby('remessa')->orderby('dateStart','desc')->get();
         return $data;
     }
 }

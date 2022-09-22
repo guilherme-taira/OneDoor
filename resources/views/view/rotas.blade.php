@@ -14,8 +14,53 @@
                     </div>
                 </div>
 
+                <!--- MODAL QUE SELECIONA O MOTORISTA --->
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLabel">Motorista <i
+                                        class="bi bi-bookmarks"></i>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="text-dark">Selecione o Motorista Abaixo</p>
+
+                                <div class="col-md-6">
+                                    <a href="{{route('motorista.create')}}"><button class="btn btn-primary btn-sm"> Novo Motorista <i class="bi bi-person-plus"></i></button></a>
+                                </div>
+
+                                <form action="{{ route('StoreRota') }}"  method="GET">
+                                    @csrf
+                                    <div class="col-md-12">
+                                        <!-- SELECT DO MOTORISTA -->
+                                        <label class="form-label" for="form8Example1">Status da Venda</label>
+                                        <select class="form-select" name="entregador" required class="form-control">
+                                            <option selected value="">Selecione...</option>
+                                            @foreach ($entregadores as $entregador)
+                                                <option value="{{ $entregador->id }}">{{ $entregador->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <!--- FIM --->
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="submit" class="btn btn-success"
+                                            value="Finalizar Rota"></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--- FINAL DO MODAL ---->
+
                 <!---- CONTENT ---->
-                <form action="{{ route('setSessionRoute') }}" method="get">
+                <form action="{{ route('setSessionRoute') }}" id="setSession" method="get">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="input-group mb-3">
@@ -28,7 +73,6 @@
                                 <select class="form-select d-none" multiple id="result">
                                 </select>
                             </div>
-
 
                             <input type="hidden" name="user" class="form-control" id="id">
                             <input type="hidden" id="name" name="name" class="form-control">
@@ -45,14 +89,16 @@
                                             <li class="p-3 mb-2 bg-warning text-dark text-decoration-none">
                                                 {{ isset($pedido['nome']) ? $pedido['nome'] : '' }}&nbsp;<a
                                                     href="{{ route('deleteSessionRoute', ['id' => $pedido['codigo']]) }}"
-                                                    class="">Tirar da Rota <i class="bi bi-dash-circle-dotted"></i></a></li>
+                                                    class="">Tirar da Rota <i
+                                                        class="bi bi-dash-circle-dotted"></i></a></li>
                                         @endforeach
                                     @endif
 
                                 </ol>
 
-                                <a href="{{ route('StoreRota') }}"><button type="button" class="btn btn-success">Finalizar
-                                        Rota <i class="bi bi-box-seam-fill"></i></button></a>
+                                <button type="button" class="btn btn-success" id="modalbutton" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">Selecionar Motorista <i class="bi bi-pin-map"></i></button>
+
                                 <a href="{{ route('allRotas') }}"><button type="button" class="btn btn-info">Ver Rotas <i
                                             class="bi bi-binoculars"></i></button></a>
                             </div>

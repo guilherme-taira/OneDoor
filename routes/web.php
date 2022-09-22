@@ -5,6 +5,7 @@ use App\Http\Controllers\ajax\ChangeStatusOrderController;
 use App\Http\Controllers\ajax\consultaretController;
 use App\Http\Controllers\ajax\GetallOrderByClientId;
 use App\Http\Controllers\Ajax\SendOrderByColaborador;
+use App\Http\Controllers\Motorista\MotoristaController;
 use App\Http\Controllers\Order\OrderAllDataController;
 use App\Http\Controllers\Order\OrderConflictController;
 use App\Http\Controllers\Order\OrderController;
@@ -57,6 +58,7 @@ Route::resource('/orders','App\Http\Controllers\Order\OrderController')->names('
 Route::resource('/conflit','App\Http\Controllers\Order\OrderConflictController')->names('conflitador')->parameters(['conflit'=> 'id']);
 Route::resource('/vendedor','App\Http\Controllers\Vendedor\VendedorController')->names('vendedor')->parameters(['vendedor' => 'id']);
 Route::resource('/rotas','App\Http\Controllers\Rotas\RotaController')->names('rotas')->parameters(['rotas' => 'id']);
+Route::resource('/motorista','App\Http\Controllers\Motorista\MotoristaController')->names('motorista')->parameters(['motorista' => 'id']);
 Route::get('broadcast/{msg}', function($msg){
     broadcast(new channelPublico($msg));
 });

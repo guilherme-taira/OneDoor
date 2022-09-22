@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Rotas;
 
 use App\Http\Controllers\Controller;
+use App\Models\entregador;
 use App\Models\orders;
 use App\Models\table_rotas;
 use App\Models\table_status;
@@ -20,8 +21,10 @@ class RotaController extends Controller
         $request->session()->forget(['_flash', '_token', '_previous']);
         $data = $request->session()->all();
 
+        $entregadores = entregador::all();
         return view('view.rotas', [
-            'pedidos' => $data
+            'pedidos' => $data,
+            'entregadores' => $entregadores,
         ]);
     }
 
@@ -43,7 +46,7 @@ class RotaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -117,9 +120,13 @@ class RotaController extends Controller
             echo $e->getMessage();
         }
 
+        $sessao = $request->session()->all();
 
+
+        $entregadores = entregador::all();
         return view('view.rotas', [
-            'pedidos' =>  $data,
+            'pedidos' => $sessao,
+            'entregadores' => $entregadores,
         ]);
     }
 
@@ -130,9 +137,6 @@ class RotaController extends Controller
         $request->session()->forget(['_flash', '_token', '_previous']);
 
         try {
-
-            echo "<pre>";
-            print_r($request->session()->all());
 
             $data = $request->session()->all();
             $codigoCliente = $request->id;
@@ -153,7 +157,14 @@ class RotaController extends Controller
 
             }
 
-            return back();
+            $sessao = $request->session()->all();
+
+            $entregadores = entregador::all();
+            return view('view.rotas', [
+                'pedidos' => $sessao,
+                'entregadores' => $entregadores,
+            ]);
+
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
@@ -164,7 +175,6 @@ class RotaController extends Controller
         $request->session()->forget(['_flash', '_token', '_previous']);
 
         $datas = $request->session()->all();
-
         $id = uniqid('EMBALEME');
 
         $lastRemessa = table_rotas::getMaxRemessaID();
@@ -173,12 +183,17 @@ class RotaController extends Controller
             $StoreRota = new table_rotas();
             $StoreRota->id_rota = $id;
             $StoreRota->cliente_id = $data['codigo'];
+            $StoreRota->id_motorista = $request->entregador;
             $StoreRota->remessa = isset($lastRemessa->remessa) ? $lastRemessa->remessa + 1 : 1;
             $StoreRota->save();
         }
 
         $datas = $request->session()->flush();
 
-        return view('view.rotas',['pedidos' => $datas]);
+        $entregadores = entregador::all();
+        return view('view.rotas', [
+            'pedidos' => $datas,
+            'entregadores' => $entregadores,
+        ]);
     }
 }

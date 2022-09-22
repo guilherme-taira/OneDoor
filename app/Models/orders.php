@@ -117,6 +117,8 @@ class orders extends Model
             }
         }
 
+        $data->orderby('name','asc');
+
         return $data->get();
     }
 
@@ -214,9 +216,6 @@ class orders extends Model
         }
 
         return $data->get();
-//         select sum(valorPago),formaPagamento,terminal from orders
-// INNER JOIN orcamentodados on orders.ORCNUM = orcamentodados.ORCNUM
-// where orders.created_at like '%2022-09-16%' and terminal = '10' and formaPagamento != ''
-// GROUP BY formaPagamento order by formaPagamento desc
+
     }
 }

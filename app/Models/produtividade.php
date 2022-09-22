@@ -23,9 +23,7 @@ class produtividade extends Model
     }
 
     public static function getAllOrders(){
-        $produtividade = produtividade::
-        where('flag_baixado','')
-        ->orderBy('created_at','desc')->paginate(10);
+        $produtividade = produtividade::where('flag_baixado','')->orderBy('id','desc')->paginate(10);
 
         return $produtividade;
     }

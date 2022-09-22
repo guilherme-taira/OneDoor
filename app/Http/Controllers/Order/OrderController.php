@@ -217,8 +217,6 @@ class OrderController extends Controller
 
     public function getEtiquetas(Request $request){
 
-        print_r($request->all());
-
         $validator = Validator::make($request->all(),[
             'orcamento' => 'required|numeric|min:0',
             'volumes' => 'required|numeric',

@@ -116,7 +116,6 @@ class OrderConflictController extends Controller
 
             $i = 0;
             $dados = [];
-
             try {
                 $vendedoras = [10,17,31,29,100];
                 foreach ($orders as $order) {
@@ -126,7 +125,7 @@ class OrderConflictController extends Controller
                             $newOrcamento->orcamento = $order['ORCNUM'];
                             $newOrcamento->dataorcamento = $order['ORCDATA'];
                             $newOrcamento->orcamentohora = $order['ORCHR'];
-                            $newOrcamento->cliente = $order['CLINome'];
+                            $newOrcamento->cliente = utf8_encode($order['CLINome']);
                             $newOrcamento->Nvendedor = $order['VENDCOD'];
                             $newOrcamento->save();
                         }
