@@ -58,10 +58,10 @@ class orders extends Model
         return $pesquisas;
     }
 
-    public static function getOneDatePaginate($orcnum){
+    public static function getOneDatePaginate($name){
         $pesquisas = orders::join('users', 'orders.client_id', '=', 'users.id')
-        ->where('ORCNUM',$orcnum)
-        ->paginate(1);
+        ->where('users.name','like','%'.$name.'%')
+        ->paginate(10);
         return $pesquisas;
     }
 

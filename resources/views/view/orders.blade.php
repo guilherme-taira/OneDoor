@@ -14,7 +14,6 @@
                     </div>
                 </div>
 
-
                 @if ($msg)
                     <div class="alert alert-danger" role="alert">
                         {{ $msg }}
@@ -27,14 +26,12 @@
                     </div>
                 @endif
 
-
-
                 <!-- BARRA DE PESQUISA -->
                 <form method="get">
                     <div class="container">
                         <div class="col-md-4">
                             <label for="pesquisar" class="float-start">Pesquisar: <i class="bi bi-search"></i> </label>
-                            <input type="text" placeholder="Digite o Número do Pedido" class="form-control"
+                            <input type="text" placeholder="Digite o Nome do Cliente" class="form-control"
                                 name="pesquisar" id="pesquisar">
                         </div>
                     </div>
