@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Motorista;
 
 use App\Http\Controllers\Controller;
 use App\Models\entregador;
+use App\Models\table_rotas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
 
 class MotoristaController extends Controller
@@ -18,7 +20,7 @@ class MotoristaController extends Controller
     {
         $entregadores = entregador::paginate(10);
 
-        return view('view.motorista.index',[
+        return view('view.motorista.index', [
             'entregadores' => $entregadores
         ]);
     }
@@ -32,7 +34,7 @@ class MotoristaController extends Controller
     {
         $entregadores = entregador::all();
 
-        return view('view.motorista.create',[
+        return view('view.motorista.create', [
             'entregadores' => $entregadores,
         ]);
     }
@@ -45,24 +47,24 @@ class MotoristaController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'nome' => 'required|min:3',
         ]);
 
         $validator->errors();
 
         if ($validator->fails()) {
-             return redirect()
-                        ->back()
-                        ->withErrors($validator)
-                        ->withInput();
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         $motorista = new entregador();
         $motorista->name = $request->input('nome');
         $motorista->save();
 
-        return redirect()->route('motorista.index')->with('msg','Motorista Cadastrado com Sucesso!');
+        return redirect()->route('motorista.index')->with('msg', 'Motorista Cadastrado com Sucesso!');
     }
 
     /**
@@ -109,4 +111,58 @@ class MotoristaController extends Controller
     {
         //
     }
+
+    public function generateReportMotorista(Request $request)
+    {
+
+        print_r($request->all());
+
+        $dados = table_rotas::getFormDataOrder($request->motorista, $request->datainicial, $request->datafinal, $request->status);
+
+        $viewData = [];
+        $viewData['orders'] = $dados;
+        $viewData['status'] = $this->getStatus($request->status);
+        $viewData['total'] = $this->total($dados);
+        $viewData['datainicial'] = $request->datainicial;
+        $viewData['datafinal'] = $request->datafinal;
+        $viewData['quantidadePedidos'] = $this->QuantidadePedidos($dados);
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->setPaper('A4', 'landscape');
+        $pdf->loadView('view.produtividade.relatorioMotorista', [
+            'viewData' => $viewData,
+        ]);
+
+        return $pdf->stream();
+    }
+
+    public function getStatus($status)
+    {
+        switch ($status) {
+            case '1':
+                return "FINALIZADOS";
+                break;
+            case '2':
+                return "AGUARDANDO";
+                break;
+        }
+    }
+
+    public function total($dados){
+        $total = 0;
+        foreach ($dados as $dado) {
+            $total += $dado->value;
+        }
+        return $total;
+    }
+
+    public function QuantidadePedidos($dados){
+        $total = 0;
+        $i = 1;
+        foreach ($dados as $dado) {
+            $total += $i;
+        }
+        return $total;
+    }
 }
+

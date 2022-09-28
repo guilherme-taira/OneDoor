@@ -40,7 +40,7 @@
                                         <!-- SELECT DO MOTORISTA -->
                                         <label class="form-label" for="form8Example1">Status da Venda</label>
                                         <select class="form-select" name="entregador" required class="form-control">
-                                            <option selected value="">Selecione...</option>
+                                            <option selected value="">Todos...</option>
                                             @foreach ($entregadores as $entregador)
                                                 <option value="{{ $entregador->id }}">{{ $entregador->name }}</option>
                                             @endforeach

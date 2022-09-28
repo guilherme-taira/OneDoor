@@ -17,7 +17,7 @@
                 <!---- CONTENT ---->
                 <div class="row">
                     @foreach ($remessas as $remessa)
-                        <div class="col-sm-5">
+                        <div class="col-sm-6">
                             <div
                                 class='card {{ isset($remessa->dateFinished) ? 'p-3 mb-2 bg-dark text-white' : 'p-3 mb-2 bg-warning text-dark' }}'>
                                 <div class="col-md-2">

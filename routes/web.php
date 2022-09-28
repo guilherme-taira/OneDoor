@@ -40,6 +40,7 @@ Route::get('/listallOrderFinished',[OrderAllDataController::class,'listallOrder'
 Route::get('/reportFinishedOrder',[OrderAllDataController::class,'getDataForm'])->name('formFinishedOrder');
 Route::get('/baixaPedidos',[OrderController::class,'getWaitingOrder'])->name('getWaitingOrder');
 Route::get('/allRotas',[OrderController::class,'allRotas'])->name('allRotas');
+Route::get('/generateReportMotorista',[MotoristaController::class,'generateReportMotorista'])->name('generateReportMotorista');
 // ROTAS POST
 Route::get('/baixarPedidosRota/{id}',[OrderController::class,'BaixaRemessa'])->name('baixarPedidosRota');
 Route::put('/UpdatePaymentForm',[OrderController::class,'UpdatePaymentForm'])->name('updatepaymentform');

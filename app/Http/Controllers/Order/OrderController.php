@@ -24,13 +24,17 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = orders::getAllDataPaginate();
+
+        if ($request->input('pesquisar')) {
+            $orders = orders::getOneDatePaginate($request->input('pesquisar'));
+        } else {
+            $orders = orders::getAllDataPaginate();
+        }
+
         $status = table_status::all();
-
-
-        return view('view.orders',[
+        return view('view.orders', [
             'orders' => $orders,
             'status' => $status
         ]);
@@ -77,7 +81,7 @@ class OrderController extends Controller
     public function edit($id)
     {
         $order = orders::getAllDataByID($id);
-        return view('view.edit',[
+        return view('view.edit', [
             'order' => $order
         ]);
     }
@@ -94,7 +98,7 @@ class OrderController extends Controller
         // echo "<pre>";
         // print_r($request->except('_token','_method'));
 
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'valor' => 'required|numeric|min:0',
             'fname' => 'required',
             'documento' => 'required',
@@ -109,19 +113,19 @@ class OrderController extends Controller
         $validator->errors();
 
         if ($validator->fails()) {
-             return redirect()
-                        ->back()
-                        ->withErrors($validator)
-                        ->withInput();
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        orders::where('ORCNUM',$request->orcnum)->update([
+        orders::where('ORCNUM', $request->orcnum)->update([
             'value' => $request->valor,
             'flag_erro' => '1',
             'Flag_Processado' => 'X',
         ]);
 
-         User::where('id',$request->clientId)->update([
+        User::where('id', $request->clientId)->update([
             'email' => $request->email,
             'documento' => $request->documento,
             'name' => $request->fname,
@@ -131,7 +135,7 @@ class OrderController extends Controller
             'uf' => $request->uf,
         ]);
 
-        return redirect()->route('ordersFail')->with('msg',"Pedido Atualizado com Sucesso!");
+        return redirect()->route('ordersFail')->with('msg', "Pedido Atualizado com Sucesso!");
     }
 
     /**
@@ -145,24 +149,27 @@ class OrderController extends Controller
         //
     }
 
-    public function getProdutividade(){
+    public function getProdutividade()
+    {
 
         $produtividades = produtividade::getProdutividade();
 
-        return view('view.produtividade.index',[
+        return view('view.produtividade.index', [
             'produtividades' => $produtividades
         ]);
     }
 
-    public function reportProdutividade(){
+    public function reportProdutividade()
+    {
         $vendedores = vendedor::getAllVendedor();
 
-        return view('view.produtividade.report',[
+        return view('view.produtividade.report', [
             'vendedores' => $vendedores
         ]);
     }
 
-    public function generateprodutividadereport(){
+    public function generateprodutividadereport()
+    {
 
         $dados = produtividade::getProdutividadeAllReport();
         echo "<pre>";
@@ -173,51 +180,52 @@ class OrderController extends Controller
 
         $i = 0;
         foreach ($dados as $value) {
-           if(!in_array(substr($value->created_at,0,10),$data)){
-                 $data[$i] = substr($value->created_at,0,10);
-                 $i++;
-           }
+            if (!in_array(substr($value->created_at, 0, 10), $data)) {
+                $data[$i] = substr($value->created_at, 0, 10);
+                $i++;
+            }
         }
 
         $i = 0;
         foreach ($dados as $value) {
-            if(!in_array($value->nome,$nomes)){
-                  $nomes[$i] = $value->nome;
-                  $i++;
+            if (!in_array($value->nome, $nomes)) {
+                $nomes[$i] = $value->nome;
+                $i++;
             }
-         }
+        }
 
         for ($j = 0; $j < count($data); $j++) {
             for ($i = 0; $i < count($nomes); $i++) {
                 $total = 0;
                 foreach ($dados as $value) {
-                    if($data[$j] == substr($value->created_at,0,10))
-                    if ($nomes[$i] == $value->nome) {
-                        $total += $value->quantidade;
-                    }
+                    if ($data[$j] == substr($value->created_at, 0, 10))
+                        if ($nomes[$i] == $value->nome) {
+                            $total += $value->quantidade;
+                        }
                 }
                 $quantidades[$j]  = $total;
 
                 $arrays[$i][$j] = [
                     'colaborador' => $nomes[$i],
-                        'Data' => $data[$j],
-                            'Quantidade' => $quantidades[$j],
+                    'Data' => $data[$j],
+                    'Quantidade' => $quantidades[$j],
                 ];
             }
         }
 
 
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('view.produtividade.responseReport',[
+        $pdf->loadView('view.produtividade.responseReport', [
             'dados' => $arrays
         ]);
 
         return $pdf->stream();
     }
 
-    public function getEtiquetas(Request $request){
+    public function getEtiquetas(Request $request)
+    {
 
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'orcamento' => 'required|numeric|min:0',
             'volumes' => 'required|numeric',
         ]);
@@ -225,62 +233,65 @@ class OrderController extends Controller
         $validator->errors();
 
         if ($validator->fails()) {
-             return redirect()
-                        ->back()
-                        ->withErrors($validator)
-                        ->withInput();
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         //QUERY SQL
-        $order = orders::join('users','users.id','=','orders.client_id')
-        ->where('ORCNUM',$request->orcamento)->get();
+        $order = orders::join('users', 'users.id', '=', 'orders.client_id')
+            ->where('ORCNUM', $request->orcamento)->get();
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->setPaper('A6');
-        $pdf->loadView('view.produtividade.etiqueta',[
+        $pdf->loadView('view.produtividade.etiqueta', [
             'dados' => $order,
             'volumes' => $request->volumes,
             'observacao' => $request->observacao,
         ]);
 
-       return $pdf->stream();
+        return $pdf->stream();
     }
 
 
-    public function getWaitingOrder(){
+    public function getWaitingOrder()
+    {
 
         // PEGA TODOS OS PEDIDSO EM AGUARDANDO
         $orders = orders::getWaitingOrders();
 
-        return view('view.baixaPedido',[
+        return view('view.baixaPedido', [
             'orders' => $orders,
         ]);
     }
 
-    public function UpdatePaymentForm(Request $request){
-       $atualizacao =  orders::where('ORCNUM',$request->OrcNum)->update(['formaPagamento' => $request->PaymentForm]);
-       if($atualizacao){
-          return redirect()->back()->with('msg', 'Pedido Atualizado com Sucesso!');
-       }
-       return redirect()->back()->with('msg', 'Pedido Atualizado com Sucesso!');
+    public function UpdatePaymentForm(Request $request)
+    {
+        $atualizacao =  orders::where('ORCNUM', $request->OrcNum)->update(['formaPagamento' => $request->PaymentForm]);
+        if ($atualizacao) {
+            return redirect()->back()->with('msg', 'Pedido Atualizado com Sucesso!');
+        }
+        return redirect()->back()->with('msg', 'Pedido Atualizado com Sucesso!');
     }
 
 
-    public function allRotas(){
+    public function allRotas()
+    {
         $datas = table_rotas::getAllRotas();
 
-        return view('view.allRotas',['remessas' => $datas]);
+        return view('view.allRotas', ['remessas' => $datas]);
     }
 
-    public function BaixaRemessa(Request $request){
+    public function BaixaRemessa(Request $request)
+    {
 
         $now = new DateTime();
-        $baixaPedidos = table_rotas::where('remessa',$request->id)->get();
+        $baixaPedidos = table_rotas::where('remessa', $request->id)->get();
         foreach ($baixaPedidos as $pedidos) {
-            table_rotas::where('id',$pedidos->id)->update(['baixado' => 'X', 'dateFinished' => $now->format('Y-m-d H:i:s')]);
+            table_rotas::where('id', $pedidos->id)->update(['baixado' => 'X', 'dateFinished' => $now->format('Y-m-d H:i:s')]);
         }
 
         return back();
     }
-
 }

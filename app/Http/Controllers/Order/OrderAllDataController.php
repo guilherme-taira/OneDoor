@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Models\entregador;
 use App\Models\orders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -13,7 +14,11 @@ class OrderAllDataController extends Controller
     {
         // $dados = new OrderGetDataController('631b282f53aa27609aa2fe58','77777');
         // $dados->resource();
-        return view('view.ordersFinished');
+        // TODOS OS ENTREGADORES
+        $entregadores = entregador::all();
+        return view('view.ordersFinished',[
+            'entregadores' => $entregadores
+        ]);
     }
 
     public function getDataForm(Request $request)
