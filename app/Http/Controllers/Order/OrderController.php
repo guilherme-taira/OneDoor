@@ -27,8 +27,19 @@ class OrderController extends Controller
     public function index(Request $request)
     {
 
+        $msg = "";
+        $msg_success = "";
+
         if ($request->input('pesquisar')) {
             $orders = orders::getOneDatePaginate($request->input('pesquisar'));
+            try {
+                if($orders[0]->ORCNUM){
+                  $msg_success = "Pedido Encontrado com Sucesso!";
+                }
+            } catch (\Exception $e) {
+                  $msg = "Não foi Encontrado Nenhum Registro com esse Pedido!";
+            }
+
         } else {
             $orders = orders::getAllDataPaginate();
         }
@@ -36,7 +47,9 @@ class OrderController extends Controller
         $status = table_status::all();
         return view('view.orders', [
             'orders' => $orders,
-            'status' => $status
+            'status' => $status,
+            'msg' => $msg,
+            'msg_success' => $msg_success,
         ]);
     }
 

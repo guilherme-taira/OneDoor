@@ -14,6 +14,21 @@
                     </div>
                 </div>
 
+
+                @if ($msg)
+                    <div class="alert alert-danger" role="alert">
+                        {{ $msg }}
+                    </div>
+                @endif
+
+                @if ($msg_success)
+                    <div class="alert alert-success" role="alert">
+                        {{ $msg_success }}
+                    </div>
+                @endif
+
+
+
                 <!-- BARRA DE PESQUISA -->
                 <form method="get">
                     <div class="container">
