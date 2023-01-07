@@ -29,12 +29,14 @@ class OrderController extends Controller
 
         $msg = "";
         $msg_success = "";
+        $pesquisar = "";
 
         if ($request->input('pesquisar')) {
             $orders = orders::getOneDatePaginate($request->input('pesquisar'));
             try {
                 if($orders[0]->ORCNUM){
                   $msg_success = "Pedido Encontrado com Sucesso!";
+                  $pesquisar = 1;
                 }
             } catch (\Exception $e) {
                   $msg = "Não foi Encontrado Nenhum Registro com esse Pedido!";
@@ -44,12 +46,14 @@ class OrderController extends Controller
             $orders = orders::getAllDataPaginate();
         }
 
+
         $status = table_status::all();
         return view('view.orders', [
             'orders' => $orders,
             'status' => $status,
             'msg' => $msg,
             'msg_success' => $msg_success,
+            'pesquisar' => $pesquisar
         ]);
     }
 
@@ -302,7 +306,13 @@ class OrderController extends Controller
         $now = new DateTime();
         $baixaPedidos = table_rotas::where('remessa', $request->id)->get();
         foreach ($baixaPedidos as $pedidos) {
-            table_rotas::where('id', $pedidos->id)->update(['baixado' => 'X', 'dateFinished' => $now->format('Y-m-d H:i:s')]);
+
+        $origin = date_create($now->format('Y-m-d H:i:s'));
+        $target = date_create($pedidos->dateStart);
+        $interval = date_diff($origin, $target);
+
+        // echo $interval->format("Dias: %a - %H:%I:%S"). "<br>";
+         table_rotas::where('id', $pedidos->id)->update(['baixado' => 'X', 'dateFinished' => $now->format('Y-m-d H:i:s'),'tempoMedio' => $interval->format("Dias: %a - %H:%I:%S")]);
         }
 
         return back();

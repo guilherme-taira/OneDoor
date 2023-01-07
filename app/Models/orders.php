@@ -97,7 +97,10 @@ class orders extends Model
          *  LISTA TODOS OS PEDIDOS QUE NÃO ESTÃO BAIXADOS
          */
         $data = orders::join('orcamentodados', 'orders.ORCNUM', '=', 'orcamentodados.ORCNUM')
-            ->join('users', 'orders.client_id', '=', 'users.id');
+            ->join('users', 'orders.client_id', '=', 'users.id')
+            //->join('table_rotas','users.id','=','table_rotas.cliente_id')
+            //->join('entregador','table_rotas.id_motorista','=','entregador.id')
+            ->select('users.name','orders.ORCNUM','users.codcli','cupomFiscal','HORASAIDA','value','valorPago','formaPagamento','terminal','vendedor');
 
         if ($datainicial && $datafinal) {
             $data->whereBetween('orcamentodados.data', [$datainicial, $datafinal]);
@@ -128,7 +131,6 @@ class orders extends Model
 
         return $data->get();
     }
-
 
     public static function getWaitingOrders()
     {
@@ -219,6 +221,9 @@ class orders extends Model
                 case '3':
                     $data->where('orders.flag_cancelado', '3');
                     break;
+                default:
+                    return $data->get();
+                break;
             }
         }
 

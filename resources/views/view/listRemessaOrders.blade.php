@@ -16,14 +16,18 @@
 
                 <!---- CONTENT ---->
                 <div class="row">
-
+                    <div class="col-md-6">
+                        <p> <strong>* O tempo Médio precisa ser divido pela quantidade de pedidos na remessa! </strong></p>
+                    </div>
                     <table class="table table-dark table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">Codigo Cliente</th>
                                 <th scope="col">Nome</th>
                                 <th scope="col">Cadastrado</th>
+                                <th scope="col">Finalizado</th>
                                 <th scope="col">Remessa</th>
+                                <th scope="col">Tempo Médio</th>
                             </tr>
                         </thead>
 
@@ -32,7 +36,9 @@
                                 <td>{{ $remessa->codcli }}</td>
                                 <td>{{ $remessa->name }}</td>
                                 <td>{{ $remessa->dateStart }}</td>
+                                <td>{{ $remessa->dateFinished }}</td>
                                 <td>{{ $remessa->remessa }}</td>
+                                <td>{{ $remessa->tempoMedio }}</td>
                             </tr>
                         @endforeach
 

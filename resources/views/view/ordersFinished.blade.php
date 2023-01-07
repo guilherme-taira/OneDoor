@@ -34,7 +34,7 @@
                                                         <div class="form-outline">
                                                             <select class="form-select" name="caixa" required
                                                                 class="form-control" aria-label="Default select example">
-                                                                <option value="">Caixa</option>
+                                                                <option value="0">...</option>
                                                                 <option value="10">10</option>
                                                                 <option value="11">11</option>
                                                                 <option value="13">13</option>

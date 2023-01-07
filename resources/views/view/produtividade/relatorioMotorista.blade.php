@@ -59,7 +59,7 @@
                             <th scope="col">DATA SAIDA</th>
                             <th scope="col">DATA BAIXA</th>
                             <th scope="col">VALOR</th>
-                            <th scope="col">ENTREGADOR</th>
+                            <th scope="col">TEMPO MÉDIO</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,7 +72,7 @@
                             <td>{{$order->dateStart}}</td>
                             <td>{{$order->dateFinished}}</td>
                             <td>{{$order->value}}</td>
-                            <td>{{substr($order->name,0,-14)}}</td>
+                            <td>{{$order->tempoMedio}}</td>
                         </tr>
                         @endforeach
                     </tbody>

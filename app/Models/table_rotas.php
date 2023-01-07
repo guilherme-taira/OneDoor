@@ -27,7 +27,7 @@ class table_rotas extends Model
         $data = table_rotas::join('users','table_rotas.cliente_id','=','users.id')
         ->join('orders','table_rotas.id','=','orders.client_id')
         ->join('entregador','table_rotas.id_motorista','=','entregador.id')
-        ->select('entregador.name','users.name as cliente','ORCNUM','codcli','remessa','dateStart','dateFinished','value');
+        ->select('entregador.name','users.name as cliente','ORCNUM','codcli','remessa','dateStart','dateFinished','value','tempoMedio');
 
         if($datainicial && $datafinal) {
             $data->whereBetween('table_rotas.created_at', [$datainicial.' 00:00:00', $datafinal.' 23:59:59']);

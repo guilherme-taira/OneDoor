@@ -42,6 +42,9 @@ class OrderAllDataController extends Controller
             case '3':
                 $viewData['status'] = "CANCELADOS";
                 break;
+            default:
+                $viewData['status'] = "TODOS";
+                break;
         }
 
         // VARIAVEIS TOTAIS
@@ -78,6 +81,7 @@ class OrderAllDataController extends Controller
         $pedidos = 0;
 
         foreach ($viewData['vendas'] as $value) {
+            orders::getCupomSaida($value->ORCNUM);
             $valor = orders::getValueRET092(substr($value->cupomFiscal, -5, 6), $value->codcli);
             try {
                 //echo $value->ORCNUM . " - > " . orders::VerificaCampoCupom($value->ORCNUM) . " -> " . $valor[0]['RECVLR'] . "->" . $value->formaPagamento . "<br>";
@@ -100,7 +104,7 @@ class OrderAllDataController extends Controller
             $viewData['pedidos'] = $pedidos;
             //GERA O PDF COM OS DADOS DOS PEDIDOS
             $pdf = App::make('dompdf.wrapper');
-            $pdf->setPaper('A4','landscape');
+            $pdf->setPaper('A3','landscape');
             $pdf->loadView('view.produtividade.relatorioVendas',[
                 'viewData' => $viewData,
             ]);

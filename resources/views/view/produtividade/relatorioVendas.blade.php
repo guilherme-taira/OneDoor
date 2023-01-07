@@ -23,6 +23,8 @@
 
         .vermelho {
             background-color: red;
+            color: rgb(255, 255, 255);
+            font-weight: 900;
         }
 
         .atencao-class {
@@ -35,7 +37,6 @@
 </head>
 
 <body>
-
     <div class="card text-center lista-pagamentos">
         <div class="card-body">
             <h5 class="card-title">Embaleme</h5>
@@ -53,6 +54,7 @@
                 <table class="table">
                     <thead>
                         <tr class="text-center">
+                            <th scope="col">Nome Cliente</th>
                             <th scope="col">ORÇAMENTO</th>
                             <th scope="col">COD CLI</th>
                             <th scope="col">Nº Cupom</th>
@@ -60,13 +62,16 @@
                             <th scope="col">Valor Orçamento</th>
                             <th scope="col">Pago R$</th>
                             <th scope="col">Forma Pagamento</th>
-                            <th scope="col">Nome Cliente</th>
+                            <th scope="col">Caixa</th>
+                            <th scope="col">Vendedor</th>
+                            {{-- <th scope="col">Motorista</th> --}}
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($viewData['vendas'] as $venda)
+                            {{ GetCupom::getCupomSaida($venda['ORCNUM']) }}
                             <tr class="text-center">
-                                {{ GetCupom::getCupomSaida($venda['ORCNUM']) }}
+                                <td>{{ $venda['name'] }}</td>
                                 <td>{{ $venda['ORCNUM'] }}</td>
                                 <td>{{ $venda['codcli'] }}</td>
                                 <td class="{{ empty($venda['cupomFiscal']) ? 'vermelho' : '' }}">
@@ -75,8 +80,12 @@
                                 <td>{{ $venda['value'] }} R$</td>
                                 <td class="{{ empty($venda['cupomFiscal']) ? 'vermelho' : '' }}">
                                     {{ isset($venda['valorPago']) ? "{$venda['valorPago']} R$" : ' - ' }}</td>
-                                <td>{{ $venda['formaPagamento'] }}</td>
-                                <td>{{ $venda['name'] }}</td>
+                                <td class="{{ empty($venda['formaPagamento']) ? 'vermelho' : '' }}">
+                                    {{ empty($venda['formaPagamento']) ? 'AGUARDANDO' : $venda['formaPagamento']}}</td>
+                                <td>{{ $venda['terminal'] }}</td>
+                                <td>{{ $venda['vendedor'] }}</td>
+
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -86,16 +95,16 @@
                 <!--- LISTA DOS VALORES ---->
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Dinheiro: R$ {{$viewData['dinheiroTotal']}}
+                        Dinheiro: R$ {{ $viewData['dinheiroTotal'] }}
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Cartão: R$ {{$viewData['cartaoTotal']}}
+                        Cartão: R$ {{ $viewData['cartaoTotal'] }}
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Pix: R$ {{$viewData['pixTotal']}}
+                        Pix: R$ {{ $viewData['pixTotal'] }}
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Boleto: R$ {{$viewData['boletoTotal']}}
+                        Boleto: R$ {{ $viewData['boletoTotal'] }}
                     </li>
                 </ul>
                 <!---- FINAL DA LISTAS ----->
@@ -104,6 +113,7 @@
     </div>
     <!-- MDB -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
+
 </body>
 
 </html>

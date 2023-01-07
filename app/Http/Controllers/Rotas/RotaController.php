@@ -120,8 +120,13 @@ class RotaController extends Controller
             echo $e->getMessage();
         }
 
-        $sessao = $request->session()->all();
 
+
+        if (!$request->user || !$request->name) {
+                $request->session()->flush();
+        }
+
+        $sessao = $request->session()->all();
 
         $entregadores = entregador::all();
         return view('view.rotas', [

@@ -155,6 +155,38 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <pre>
+                                        @foreach ($orders as $order)
+                                        @if($pesquisar)
+                                        <tr>
+                                            <th scope="row"><input class="orcnum" name="orcnum" type="text"
+                                                    size="7" value="{{ $order->ORCNUM }}"></th>
+                                            <td> {{ $order->name }}</td>
+                                            <td>{{ $order->cidade }}</td>
+                                            <td>{{ $order->quantity_items }}</td>
+                                            <td>R${{ $order->value }}</td>
+                                            <td>
+                                                <i class="fa" aria-hidden="false"></i>
+                                            </td>
+                                            <td class="botaoImprimir">
+                                                <a class="d-grid gap-2" id="btnFinalizar"><i
+                                                        class="bi bi-printer"></i></a>
+                                            </td>
+                                            <!--- SELECT STATUS DOS PEDIDOS ---->
+                                            <td>
+                                                <select class="form-select" id="StatusSelect"
+                                                    aria-label="Default select example">
+                                                    <option value="{{ $order->id }}" selected>Finalizado</option>
+                                                    @foreach ($status as $code)
+                                                        <option value="{{ $code->id }}">{{ $code->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        @endif
+                                        @endforeach
+
                                     @foreach ($orders as $order)
                                         @if ($order->flag_finalizado == '1')
                                             <tr class="line alert alert-success">
