@@ -15,7 +15,6 @@ class SendOrderByColaborador extends Controller
         } catch (\Exception $e) {
             return response()->json(['dados' => $e->getMessage()]);
         }
-
         return response()->json(['dados' => $data->id],200);
     }
 }

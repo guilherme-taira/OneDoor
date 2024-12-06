@@ -21,13 +21,10 @@ class ViewController extends Controller
 {
     public function index()
     {
-        // $CreateController = new CreateController();
-        // print_r($CreateController->resource());
+
         // $GenerateNewOrderController = new GenerateNewOrderController();
         // $GenerateNewOrderController->NewOrder();
 
-        $auth = new AuthController();
-        print_r($auth->resource());
 
         return view('view.index');
     }
@@ -99,11 +96,12 @@ class ViewController extends Controller
                     ->select('ORCAMENTO', 'DATA', 'SAT_CHAVE', 'PDV', 'VENDEDOR')
                     ->get();
 
+                // echo "<pre>";
+                // print_r($pesquisas);
 
                 foreach ($pesquisas as $value) {
                     // GET CUPOM VALOR
                     $this->getCupomSaida($value['ORCAMENTO']);
-
                     //VERIFICA SE JÀ FOI CADASTRADO O ORÇAMENTO
                     if (orcamentodados::VerifyNewOrder($value['ORCAMENTO']) > 0) {
                         //echo "CADASTRADO COM SUCESSO!";
@@ -171,9 +169,13 @@ class ViewController extends Controller
             echo "CAIXA 13 DESCONECTADO!!";
         }
 
+        //AUTENTICA E ATUALIZA O TOKEN A CADA 24 HORAS
+        $auth = new AuthController();
+        $auth->resource();
+
         // SOBE OS PEDIDOS NO ONEDOOR
-        // $sendData = new GenerateNewOrderController();
-        // $sendData->NewOrder();
+        $sendData = new GenerateNewOrderController();
+        $sendData->NewOrder();
 
         // dados de orçamentos do dia
         $orcamentodados = orcamentodados::where('created_at', 'LIKE', '%' . $data . '%')->get();
@@ -190,11 +192,12 @@ class ViewController extends Controller
         return view('view.consulta');
     }
 
-    public function getValueOrder($cupom){
+    public function getValueOrder($cupom)
+    {
         try {
             $dados = DB::connection('odbc-ret')->table('RET092')
-            ->select("RECVLR","RECVcto")
-            ->where("RECDoc",$cupom)->distinct()->get();
+                ->select("RECVLR", "RECVcto")
+                ->where("RECDoc", $cupom)->distinct()->get();
 
             return $dados[0]['RECVLR'];
         } catch (\Exception $e) {
@@ -213,22 +216,19 @@ class ViewController extends Controller
                 ->distinct()
                 ->get();
 
-            if($pesquisas){
+            if ($pesquisas) {
                 try {
                     $valor = $this->getValueOrder($pesquisas[0]['SAICupom']);
-                    orders::where('ORCNUM', $ORCAMENTO)->update(['cupomFiscal' => $pesquisas[0]['SAICupom'],'valorPago' => $valor]);
+                    orders::where('ORCNUM', $ORCAMENTO)->update(['cupomFiscal' => $pesquisas[0]['SAICupom'], 'valorPago' => $valor]);
                 } catch (\Exception $e) {
                     $valor = 0;
                 }
                 orders::where('ORCNUM', $ORCAMENTO)->update(['cupomFiscal' => $pesquisas[0]['SAICupom']]);
-
             }
             //return $pesquisas;
         } catch (\Exception $e) {
             //echo $e->getMessage();
         }
-
-
     }
 
     public function ActivePDV()
@@ -263,7 +263,7 @@ class ViewController extends Controller
 
     public function GravaBancoDados($ORCAMENTO)
     {
-
+    
         $pesquisas = DB::connection('odbc-ret')->table('RET305')
             ->join('RET028', 'RET028.CLICod', '=', 'RET305.CLICOD')
             ->join('RET501', 'RET028.CIDCod', '=', 'RET501.CIDCod')
@@ -288,11 +288,12 @@ class ViewController extends Controller
             if (!orders::VerifyNewOrder($ORCAMENTO) > 0) {
 
                 if (isset($ORCAMENTO)) {
+            
                     // FUNCTION USER
                     try {
                         $NewUser = new User();
                         $NewUser->name = utf8_encode($pesquisa['CLINome']);
-                        $NewUser->email = isset($pesquisa['CLIEmail']) ? $pesquisa['CLIEmail'] : 'contato@embaleme.com';
+                        $NewUser->email = isset($pesquisa['CLIEmail']) ? utf8_encode($pesquisa['CLIEmail']) : 'contato@embaleme.com';
                         $NewUser->documento = '' != ($this->DocumentFilter($pesquisa)) ? $this->DocumentFilter($pesquisa) : '11111111111';
                         $NewUser->telefone = $this->countNumber($this->TelefoneFilter($pesquisa));
                         $NewUser->endereco = utf8_encode($pesquisa['CLIEnd']);

@@ -120,10 +120,10 @@ class CreateController extends Controller
                         "district" => $this->getDistrict(),
                         "city" => $this->getCity(),
                         "state" => $this->getState(),
-                        "location" => [
-                            "latitude" => $dadosjson->latitude,
-                            "longitude" => $dadosjson->longitude
-                        ],
+                        // "location" => [
+                        //     "latitude" => $dadosjson->latitude,
+                        //     "longitude" => $dadosjson->longitude
+                        // ],
                     ],
                 ],
                 "items" => [
@@ -201,10 +201,10 @@ class CreateController extends Controller
                         "district" => $this->getDistrict(),
                         "city" => $this->getCity(),
                         "state" => $this->getState(),
-                        "location" => [
-                            "latitude" => -0,
-                            "longitude" => -0
-                        ],
+                        // "location" => [
+                        //     "latitude" => -0,
+                        //     "longitude" => -0
+                        // ],
                     ],
                 ],
                 "items" => [

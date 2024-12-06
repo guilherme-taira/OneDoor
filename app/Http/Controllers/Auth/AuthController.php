@@ -17,7 +17,7 @@ interface RequestOnedoor
 class AuthController implements RequestOnedoor
 {
     const URL_BASE_ONDEDOOR = "https://auth.onedoor.com.br"; // https://onedoor-prod.us.auth0.com PROD // https://onedoor-dev.us.auth0.com DEV
-
+    const URL_BASE_ONEDOOR_DEV = "https://onedoor-dev.us.auth0.com";
     public function resource()
     {
         return $this->get('/oauth/token');
@@ -26,7 +26,7 @@ class AuthController implements RequestOnedoor
     public function get($resource)
     {
         // ENDPOINT PARA REQUISICAO
-        $endpoint = self::URL_BASE_ONDEDOOR . $resource;
+        $endpoint = self::URL_BASE_ONEDOOR_DEV . $resource;
 
         $Data = [
             "client_id" => env('ONEDOOR_CLIENT_ID'), // PROD env('ONEDOOR_CLIENT_ID')
@@ -54,7 +54,7 @@ class AuthController implements RequestOnedoor
 
         if (isset($auth)) {
             try {
-                if ($dataBanco->format('Y-m-d H:i:s') < $data->format('Y-m-d H:i:s')) {
+                if ($dataBanco->format('Y-m-d H:i:s') > $data->format('Y-m-d H:i:s')) {
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $endpoint);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -69,6 +69,7 @@ class AuthController implements RequestOnedoor
                     curl_close($ch);
 
                     $access_token = json_decode($response);
+                    print_r($access_token);
                     echo "ATUALIZOU";
                     DB::connection('ecommerce')->table('token')
                         ->where('id', $auth->id)

@@ -14,7 +14,6 @@ class AlterHoraEntrega extends Migration
     public function up()
     {
         Schema::table('orders',function(Blueprint $table) {
-            $table->dateTime('dataHoraEntrega')->nullable();
             $table->string('cupomFiscal')->nullable();
             $table->char('flag_cancelado',1)->nullable();
             $table->char('flag_aguardando',1)->nullable();
@@ -29,8 +28,6 @@ class AlterHoraEntrega extends Migration
     public function down()
     {
         Schema::table('orders',function(Blueprint $table) {
-            $table->dropColumn(['dataHoraEntrega']);
-            $table->dropColumn(['cupomFiscal']);
             $table->dropColumn(['flag_cancelado']);
             $table->dropColumn(['flag_aguardando']);
         });

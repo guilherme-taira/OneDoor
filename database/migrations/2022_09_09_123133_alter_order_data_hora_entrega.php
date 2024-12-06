@@ -17,7 +17,7 @@ class AlterOrderDataHoraEntrega extends Migration
 
         Schema::table('orders',function(Blueprint $table) {
             $table->dateTime('dataHoraEntrega')->nullable();
-            $table->string('cupomFiscal')->nullable();
+            // $table->string('cupomFiscal')->nullable();
         });
     }
 
@@ -30,7 +30,7 @@ class AlterOrderDataHoraEntrega extends Migration
     {
         Schema::table('orders',function(Blueprint $table) {
             $table->dropColumn(['dataHoraEntrega']);
-            $table->dropColumn(['cupomFiscal']);
+            //$table->dropColumn(['cupomFiscal']);
         });
     }
 }
